@@ -5,6 +5,11 @@
     <string name="title_navigator">导航</string>
     <string name="title_profile">我的</string>
     <string name="title_group">公众号</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_tab_recommended">推荐</string>
+    <string name="home_tab_square">广场</string>
+    <string name="home_tab_answer">问答</string>
+    <string name="title_search">搜索</string>
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+    <string name="hello_i_am_a_textview">Hello, I am a TextView</string>
+
 </resources>
