@@ -1,4 +1,4 @@
-package com.tong.wanandroid.ui.home.child.answer
+package com.tong.wanandroid.ui.home.child.square
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.tong.wanandroid.R
 
-class AnswerFragment : Fragment() {
+class SquareFragment : Fragment() {
 
     companion object {
-        fun newInstance() = AnswerFragment()
+        fun newInstance() = SquareFragment()
     }
 
-    private lateinit var viewModel: AnswerViewModel
+    private lateinit var viewModel: SquareViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_answer, container, false)
+        return inflater.inflate(R.layout.fragment_square, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AnswerViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SquareViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

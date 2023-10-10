@@ -8,7 +8,7 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/homeTabLayout"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_width="match_parent"
         app:tabIndicatorHeight="0dp"
         app:layout_constraintBottom_toTopOf="@id/homeViewPager2"
@@ -19,23 +19,7 @@
         app:tabMode="scrollable"
         app:tabTextAppearance="@style/TabLayout.TextAppearance"
         app:tabTextColor="?colorPrimary"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.tabs.TabItem
-            android:text="@string/home_tab_recommended"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"/>
-
-        <com.google.android.material.tabs.TabItem
-            android:text="@string/home_tab_square"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"/>
-        <com.google.android.material.tabs.TabItem
-            android:text="@string/home_tab_answer"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"/>
-
-    </com.google.android.material.tabs.TabLayout>
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
         android:id="@+id/searchIcon"

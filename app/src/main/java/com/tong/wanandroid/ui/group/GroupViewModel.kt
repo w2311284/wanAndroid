@@ -1,4 +1,7 @@
 package com.tong.wanandroid.ui.group
 
-class GroupViewModel {
+import androidx.lifecycle.ViewModel
+
+class GroupViewModel : ViewModel() {
+    // TODO: Implement the ViewModel
 }
