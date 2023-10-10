@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="launcher_background_color">@android:color/white</color>
+    <color name="launcher_foreground_android_color">#1f5a89</color>
+
+    <color name="placeholer_gray_300">@color/material_grey_300</color>
+    <color name="secondary_background_container">#eff0f3</color>
 </resources>
