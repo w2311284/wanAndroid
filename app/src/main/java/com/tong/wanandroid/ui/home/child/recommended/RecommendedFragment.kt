@@ -6,9 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.tong.wanandroid.R
+import com.tong.wanandroid.databinding.FragmentRecommendedBinding
+import com.tong.wanandroid.ui.home.child.banner.HomeBannerAdapter
 
 class RecommendedFragment : Fragment() {
+
+    private var _binding: FragmentRecommendedBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     companion object {
         fun newInstance() = RecommendedFragment()
@@ -17,16 +24,26 @@ class RecommendedFragment : Fragment() {
     private lateinit var viewModel: RecommendedViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_recommended, container, false)
+        viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
+        _binding = FragmentRecommendedBinding.inflate(inflater, container, false)
+
+        binding.banner.setAdapter(viewModel.banners.value?.let {
+            HomeBannerAdapter(it) {
+
+            }
+        })
+
+
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

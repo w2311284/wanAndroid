@@ -1,11 +1,13 @@
 package com.tong.wanandroid.common.services.http
 
 data class NetworkResponse<T>(
-    private val data : T? = null,
-    private val code : Int? = -1,
-    private val msg : String? = ""
+    val data : T,
+    val code : Int,
+    val msg : String
 ){
-
+    fun isSuccess(): Boolean {
+        return code == 0
+    }
 }
 
 sealed class RequestResult<out T>{
