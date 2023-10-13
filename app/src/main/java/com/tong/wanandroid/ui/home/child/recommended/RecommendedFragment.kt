@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
-import com.tong.wanandroid.ui.home.child.banner.HomeBannerAdapter
+import com.youth.banner.adapter.BannerImageAdapter
+import com.youth.banner.holder.BannerImageHolder
 
 class RecommendedFragment : Fragment() {
 
@@ -31,14 +34,29 @@ class RecommendedFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
         _binding = FragmentRecommendedBinding.inflate(inflater, container, false)
 
-        binding.banner.setAdapter(viewModel.banners.value?.let {
-            HomeBannerAdapter(it) {
-
-            }
-        })
-
-
+        initBanner()
         return binding.root
+    }
+
+    fun initBanner(){
+        val banner = binding.banner
+        viewModel.bannerResponse.observe(viewLifecycleOwner) { response ->
+            banner.apply {
+                setAdapter(object : BannerImageAdapter<BannerModel>(response) {
+                    override fun onBindView(
+                        holder: BannerImageHolder,
+                        data: BannerModel,
+                        position: Int,
+                        size: Int
+                    ) {
+                        Glide.with(this@RecommendedFragment)
+                            .load(data.imagePath)
+                            .into(holder.imageView)
+                    }
+                })
+            }
+        }
+        viewModel.getBanner()
     }
 
     override fun onDestroyView() {

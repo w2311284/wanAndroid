@@ -15,19 +15,16 @@ class RecommendedViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
     private val api = RetrofitManager.create(ApiService::class.java)
-
-//    private val _text = MutableLiveData<String>().apply {
-//        value = "This is notifications Fragment"
-//    }
-//    val text: LiveData<String> = _text
-    private val _banners = MutableLiveData<List<BannerModel>?>()
-    val banners : MutableLiveData<List<BannerModel>?> = _banners
+    private val _bannerResponse = MutableLiveData<List<BannerModel>>()
+    val bannerResponse : MutableLiveData<List<BannerModel>> = _bannerResponse
 
     fun getBanner(){
         viewModelScope.launch {
             api.getBanner().let { response ->
                 if (response.isSuccess()){
-                    _banners.value = response.data
+                    response.data.let {
+                        _bannerResponse.value = it
+                    }
                 }
             }
         }
