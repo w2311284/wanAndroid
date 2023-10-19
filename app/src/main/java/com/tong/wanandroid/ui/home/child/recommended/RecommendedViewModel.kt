@@ -1,7 +1,6 @@
 package com.tong.wanandroid.ui.home.child.recommended
 
-import android.util.Log
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +26,14 @@ class RecommendedViewModel : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun getArticleList(){
+        viewModelScope.launch {
+//            api.getArticleList().let { response ->
+//
+//            }
         }
     }
 }

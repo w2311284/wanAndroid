@@ -34,29 +34,42 @@ class RecommendedFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
         _binding = FragmentRecommendedBinding.inflate(inflater, container, false)
 
+        initRefreshLayout()
+        initRecycleView()
         initBanner()
         return binding.root
     }
 
-    fun initBanner(){
-        val banner = binding.banner
-        viewModel.bannerResponse.observe(viewLifecycleOwner) { response ->
-            banner.apply {
-                setAdapter(object : BannerImageAdapter<BannerModel>(response) {
-                    override fun onBindView(
-                        holder: BannerImageHolder,
-                        data: BannerModel,
-                        position: Int,
-                        size: Int
-                    ) {
-                        Glide.with(this@RecommendedFragment)
-                            .load(data.imagePath)
-                            .into(holder.imageView)
-                    }
-                })
-            }
+    fun initRefreshLayout(){
+        val swipeRefreshLayout = binding.recommendedRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
         }
-        viewModel.getBanner()
+    }
+
+    fun initRecycleView(){
+        val recycleView = binding.recommendedList
+    }
+
+    fun initBanner(){
+//        val banner = binding.banner
+//        viewModel.bannerResponse.observe(viewLifecycleOwner) { response ->
+//            banner.apply {
+//                setAdapter(object : BannerImageAdapter<BannerModel>(response) {
+//                    override fun onBindView(
+//                        holder: BannerImageHolder,
+//                        data: BannerModel,
+//                        position: Int,
+//                        size: Int
+//                    ) {
+//                        Glide.with(this@RecommendedFragment)
+//                            .load(data.imagePath)
+//                            .into(holder.imageView)
+//                    }
+//                })
+//            }
+//        }
+//        viewModel.getBanner()
     }
 
     override fun onDestroyView() {
