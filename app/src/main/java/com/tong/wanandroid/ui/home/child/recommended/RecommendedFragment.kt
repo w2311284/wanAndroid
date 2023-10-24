@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
+import com.tong.wanandroid.ui.home.child.item.HomeAdapter
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 
@@ -49,6 +50,8 @@ class RecommendedFragment : Fragment() {
 
     fun initRecycleView(){
         val recycleView = binding.recommendedList
+        val adapter = HomeAdapter()
+//        viewModel
     }
 
     fun initBanner(){

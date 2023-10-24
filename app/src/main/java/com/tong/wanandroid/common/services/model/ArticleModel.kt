@@ -34,7 +34,9 @@ data class ArticleModel(
     var userId: Int,
     var visible: Int,
     var zan: Int
-)
+){
+    fun getArticleAuthor(): String = author.ifEmpty { shareUser }
+}
 
 data class Tag(
     val name: String,
