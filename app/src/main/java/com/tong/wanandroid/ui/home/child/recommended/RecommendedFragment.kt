@@ -6,12 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
 import com.tong.wanandroid.ui.home.child.item.HomeAdapter
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class RecommendedFragment : Fragment() {
 
@@ -27,6 +33,8 @@ class RecommendedFragment : Fragment() {
 
     private lateinit var viewModel: RecommendedViewModel
 
+    val homeAdapter = HomeAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +45,6 @@ class RecommendedFragment : Fragment() {
 
         initRefreshLayout()
         initRecycleView()
-        initBanner()
         return binding.root
     }
 
@@ -45,13 +52,18 @@ class RecommendedFragment : Fragment() {
         val swipeRefreshLayout = binding.recommendedRefreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
+            homeAdapter.refresh()
         }
     }
 
     fun initRecycleView(){
         val recycleView = binding.recommendedList
-        val adapter = HomeAdapter()
-//        viewModel
+        recycleView.adapter = homeAdapter
+        lifecycleScope.launch {
+            viewModel.getArticlesFlow.collectLatest {
+                homeAdapter.submitData(it)
+            }
+        }
     }
 
     fun initBanner(){
