@@ -1,7 +1,8 @@
-package com.tong.wanandroid.ui.home.child.item
+package com.tong.wanandroid.ui.home.child.viewHolder
 
 import com.bumptech.glide.Glide
 import com.tong.wanandroid.BaseViewHolder
+import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.common.services.model.Banners
 import com.tong.wanandroid.databinding.ItemHomeBannerLayoutBinding
@@ -26,6 +27,5 @@ class BannerViewHolder(private val binding: ItemHomeBannerLayoutBinding) : BaseV
                 })
         }
         binding.executePendingBindings()
-        TODO("Not yet implemented")
     }
 }

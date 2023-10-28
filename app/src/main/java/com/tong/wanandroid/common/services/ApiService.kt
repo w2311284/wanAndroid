@@ -31,4 +31,20 @@ interface ApiService {
     @GET("article/top/json")
     suspend fun getArticleTopList(): NetworkResponse<List<ArticleModel>>
 
+    /**
+     * 广场文章
+     */
+    @GET("user_article/list/{pageNo}/json")
+    suspend fun getSquarePageList(
+        @Path("pageNo") pageNo: Int,
+        @Query("page_size") pageSize: Int
+    ): NetworkResponse<PageModel<ArticleModel>>
+
+
+    /**
+     * 问答列表
+     */
+    @GET("wenda/list/{pageNo}/json")
+    suspend fun getAnswerPageList(@Path("pageNo") pageNo: Int): NetworkResponse<PageModel<ArticleModel>>
+
 }

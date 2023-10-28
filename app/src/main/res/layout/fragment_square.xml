@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.child.square.SquareFragment">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/squareRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="广场" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/squareList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

@@ -1,8 +1,7 @@
-package com.tong.wanandroid.ui.home.child.item
+package com.tong.wanandroid.ui.home.child.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -14,6 +13,8 @@ import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.Banners
 import com.tong.wanandroid.databinding.ItemHomeArticleLayoutBinding
 import com.tong.wanandroid.databinding.ItemHomeBannerLayoutBinding
+import com.tong.wanandroid.ui.home.child.viewHolder.ArticleViewHolder
+import com.tong.wanandroid.ui.home.child.viewHolder.BannerViewHolder
 
 class HomeAdapter :
     PagingDataAdapter<Any, BaseViewHolder<*>>(DIFF_CALLBACK) {
@@ -21,8 +22,8 @@ class HomeAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = when (viewType) {
-          VIEW_TYPE_Article -> DataBindingUtil.inflate(layoutInflater, R.layout.item_home_article_layout, parent, false)
-          VIEW_TYPE_Banner -> DataBindingUtil.inflate(layoutInflater, R.layout.item_home_banner_layout, parent, false)
+          VIEW_TYPE_Article -> DataBindingUtil.inflate<ItemHomeArticleLayoutBinding>(layoutInflater, R.layout.item_home_article_layout, parent, false)
+          VIEW_TYPE_Banner -> DataBindingUtil.inflate<ItemHomeBannerLayoutBinding>(layoutInflater, R.layout.item_home_banner_layout, parent, false)
           else -> throw IllegalArgumentException("Invalid view type")
         }
 

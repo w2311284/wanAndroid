@@ -6,16 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.bumptech.glide.Glide
-import com.tong.wanandroid.common.services.model.BannerModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
-import com.tong.wanandroid.ui.home.child.item.HomeAdapter
-import com.youth.banner.adapter.BannerImageAdapter
-import com.youth.banner.holder.BannerImageHolder
+import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,8 +26,7 @@ class RecommendedFragment : Fragment() {
     }
 
     private lateinit var viewModel: RecommendedViewModel
-
-    val homeAdapter = HomeAdapter()
+    private val homeAdapter by lazy { HomeAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,49 +35,27 @@ class RecommendedFragment : Fragment() {
     ): View? {
         viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
         _binding = FragmentRecommendedBinding.inflate(inflater, container, false)
-
-        initRefreshLayout()
-        initRecycleView()
+        initView()
         return binding.root
     }
 
-    fun initRefreshLayout(){
+    fun initView(){
+        val recycleView = binding.recommendedList
         val swipeRefreshLayout = binding.recommendedRefreshLayout
+
+        recycleView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = homeAdapter
+        }
+        lifecycleScope.launch {
+            viewModel.getArticlesFlow.collectLatest(homeAdapter::submitData)
+
+        }
+
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
             homeAdapter.refresh()
         }
-    }
-
-    fun initRecycleView(){
-        val recycleView = binding.recommendedList
-        recycleView.adapter = homeAdapter
-        lifecycleScope.launch {
-            viewModel.getArticlesFlow.collectLatest {
-                homeAdapter.submitData(it)
-            }
-        }
-    }
-
-    fun initBanner(){
-//        val banner = binding.banner
-//        viewModel.bannerResponse.observe(viewLifecycleOwner) { response ->
-//            banner.apply {
-//                setAdapter(object : BannerImageAdapter<BannerModel>(response) {
-//                    override fun onBindView(
-//                        holder: BannerImageHolder,
-//                        data: BannerModel,
-//                        position: Int,
-//                        size: Int
-//                    ) {
-//                        Glide.with(this@RecommendedFragment)
-//                            .load(data.imagePath)
-//                            .into(holder.imageView)
-//                    }
-//                })
-//            }
-//        }
-//        viewModel.getBanner()
     }
 
     override fun onDestroyView() {

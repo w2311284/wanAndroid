@@ -1,4 +1,4 @@
-package com.tong.wanandroid.ui.home.child.item
+package com.tong.wanandroid.ui.home.child.viewHolder
 import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.ItemHomeArticleLayoutBinding
@@ -6,6 +6,5 @@ class ArticleViewHolder(private val binding: ItemHomeArticleLayoutBinding) : Bas
     override fun bind(item: ArticleModel) {
         binding.article = item
         binding.executePendingBindings()
-        TODO("Not yet implemented")
     }
 }
