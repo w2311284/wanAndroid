@@ -32,7 +32,7 @@ class AnswerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(AnswerViewModel::class.java)
+        viewModel = ViewModelProvider(this)[AnswerViewModel::class.java]
         _binding = FragmentAnswerBinding.inflate(inflater, container, false)
         initView()
         return binding.root

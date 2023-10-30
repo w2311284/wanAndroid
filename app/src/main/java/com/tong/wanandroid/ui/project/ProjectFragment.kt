@@ -4,32 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tong.wanandroid.databinding.FragmentProjectBinding
 
 class ProjectFragment : Fragment() {
 
     private var _binding: FragmentProjectBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: ProjectViewModel
+
+    private lateinit var childAdapter: ProjectViewPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val projectViewModel =
-            ViewModelProvider(this).get(ProjectViewModel::class.java)
-
+        viewModel =
+            ViewModelProvider(this)[ProjectViewModel::class.java]
         _binding = FragmentProjectBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        initView()
+        return binding.root
+    }
 
+    fun initView(){
+        val tabLayout = binding.projectTabLayout
+        val viewPager = binding.projectViewPager
+        childAdapter = ProjectViewPagerAdapter(emptyList(),this.childFragmentManager,lifecycle)
 
-        return root
+        viewPager.adapter = childAdapter
+        TabLayoutMediator(tabLayout,viewPager){ tab, position ->
+            tab.text = childAdapter.items[position].name
+        }.attach()
+
+        viewModel.projectTitleList.observe(viewLifecycleOwner){
+            childAdapter.items = it
+            childAdapter.notifyDataSetChanged()
+        }
+        viewModel.getProjectTitles()
     }
 
     override fun onDestroyView() {

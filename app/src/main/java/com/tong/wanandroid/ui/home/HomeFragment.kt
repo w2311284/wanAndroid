@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val tabLayout = binding.homeTabLayout
-        val viewPager = binding.homeViewPager2
+        val viewPager = binding.homeViewPager
         val adapter = HomeViewPagerAdapter(generateHomeTabs(),this.childFragmentManager,lifecycle)
         viewPager.adapter = adapter
         TabLayoutMediator(tabLayout,viewPager){ tab, position ->

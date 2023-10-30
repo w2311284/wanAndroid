@@ -31,7 +31,7 @@ class SquareFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(SquareViewModel::class.java)
+        viewModel = ViewModelProvider(this)[SquareViewModel::class.java]
         _binding = FragmentSquareBinding.inflate(inflater, container, false)
         initView()
         return binding.root

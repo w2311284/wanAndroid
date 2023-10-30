@@ -34,7 +34,7 @@ class RecommendedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this).get(RecommendedViewModel::class.java)
+        viewModel = ViewModelProvider(this)[RecommendedViewModel::class.java]
         _binding = FragmentRecommendedBinding.inflate(inflater, container, false)
         initView()
         return binding.root

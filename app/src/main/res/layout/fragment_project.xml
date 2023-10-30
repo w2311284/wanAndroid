@@ -6,5 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.project.ProjectFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.project.ProjectFragment">
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/projectTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="center"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TabLayout.TextAppearance"
+            app:tabTextColor="?colorPrimary" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/projectViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
