@@ -24,9 +24,6 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-
         val tabLayout = binding.homeTabLayout
         val viewPager = binding.homeViewPager2
         val adapter = HomeViewPagerAdapter(generateHomeTabs(),this.childFragmentManager,lifecycle)

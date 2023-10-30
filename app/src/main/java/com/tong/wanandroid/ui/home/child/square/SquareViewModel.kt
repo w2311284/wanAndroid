@@ -10,12 +10,14 @@ import com.tong.wanandroid.BasePagingSource
 import com.tong.wanandroid.common.services.ApiService
 import com.tong.wanandroid.common.services.http.RetrofitManager
 import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.Banners
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 
 class SquareViewModel : ViewModel() {
     private val api = RetrofitManager.create(ApiService::class.java)
 
-    val getSquareFlow = getSquarePageData(20)
+    val getSquareFlow = getSquarePageData(10)
 
     fun getSquarePageData(pageSize: Int) =
         Pager(
@@ -26,7 +28,12 @@ class SquareViewModel : ViewModel() {
             )
         ){
             BasePagingSource(0) { page, size ->
-                api.getSquarePageList(page,size).data.datas
+
+                val articles = api.getSquarePageList(page,size).data
+                with(ArrayList<Any>(articles.datas.size)) {
+                    addAll(articles.datas)
+                    this
+                }
             }
         }.flow.cachedIn(viewModelScope)
 }

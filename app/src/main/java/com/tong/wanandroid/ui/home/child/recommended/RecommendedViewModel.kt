@@ -17,7 +17,7 @@ class RecommendedViewModel : ViewModel() {
 
     private val api = RetrofitManager.create(ApiService::class.java)
 
-    val getArticlesFlow = getHomePageData(20).cachedIn(viewModelScope)
+    val getArticlesFlow = getHomePageData(1).cachedIn(viewModelScope)
 
     fun getHomePageData(pageSize: Int) =
         Pager(

@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.child.answer.AnswerFragment">
 
-    <TextView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/answerRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="问答" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/answerList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

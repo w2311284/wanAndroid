@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter

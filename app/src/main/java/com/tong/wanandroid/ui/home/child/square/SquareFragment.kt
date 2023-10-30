@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tong.wanandroid.R
 import com.tong.wanandroid.databinding.FragmentSquareBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -35,7 +34,7 @@ class SquareFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(SquareViewModel::class.java)
         _binding = FragmentSquareBinding.inflate(inflater, container, false)
         initView()
-        return inflater.inflate(R.layout.fragment_square, container, false)
+        return binding.root
     }
 
     fun initView(){
@@ -55,6 +54,11 @@ class SquareFragment : Fragment() {
             squareAdapter.refresh()
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
