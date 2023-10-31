@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
@@ -49,13 +51,20 @@ class RecommendedFragment : Fragment() {
             adapter = homeAdapter
         }
         lifecycleScope.launch {
-            viewModel.getArticlesFlow.collectLatest(homeAdapter::submitData)
-
+            homeAdapter.loadStateFlow.collectLatest(this@RecommendedFragment::updateLoadStates)
         }
-
+        lifecycleScope.launch {
+            viewModel.getArticlesFlow.collectLatest(homeAdapter::submitData)
+        }
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
             homeAdapter.refresh()
+        }
+    }
+
+    private fun updateLoadStates(loadStates: CombinedLoadStates) {
+        binding.loadingContainer.apply {
+            loadingProgress.isVisible = homeAdapter.itemCount == 0 && loadStates.source.refresh is LoadState.Loading
         }
     }
 

@@ -23,10 +23,4 @@ class GroupFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_group, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(GroupViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <import type="android.text.Html" />
+
+        <variable
+            name="article"
+            type="com.tong.wanandroid.common.services.model.ArticleModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="6dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp"
+        app:strokeWidth="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/projectContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/secondary_background_container"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="12dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/projectAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text='@{article.getArticleAuthor}'
+                android:textSize="13sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@id/projectDate"
+                app:layout_constraintEnd_toStartOf="@id/projectCollect"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/projectDate"
+                app:layout_constraintTop_toTopOf="@id/projectDate"
+                tools:text="falkcmzxxczmxz" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/projectDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:text="@{article.niceDate}"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/projectCollect"
+                app:layout_constraintStart_toEndOf="@+id/projectCover"
+                app:layout_constraintTop_toTopOf="@id/projectCollect"
+                tools:text="2022-02-20 20:59" />
+
+            <ImageView
+                android:id="@+id/projectCover"
+                android:layout_width="104dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/projectTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{Html.fromHtml(article.title)}"
+                android:textColor="?colorOnSurface"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/projectContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/projectCover"
+                app:layout_constraintTop_toTopOf="@+id/projectCover"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="我是标题\n" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/projectContent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.2"
+                android:maxLines="4"
+                android:text="@{article.desc}"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/projectCollect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/projectTitle"
+                app:layout_constraintTop_toBottomOf="@+id/projectTitle"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="一个Jetpack结合MVVM的快速开发框架，基于MVVM模式集成谷歌官方推荐的JetPack组件库：LiveData、ViewModel、Lifecycle组件 使用Kotlin语言，添加大量拓展函数，简化代码 加入Retrofit网络请求,协程，帮你简化各种操作，让你快速开发项目" />
+
+            <ImageView
+                android:id="@+id/projectCollect"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@{article.collect?@drawable/ic_collect:@drawable/ic_un_collect}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_un_collect" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

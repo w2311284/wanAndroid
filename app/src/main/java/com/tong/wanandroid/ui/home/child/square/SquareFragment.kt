@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.databinding.FragmentSquareBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
@@ -46,6 +49,9 @@ class SquareFragment : Fragment() {
             adapter = squareAdapter
         }
         lifecycleScope.launch {
+            squareAdapter.loadStateFlow.collectLatest(this@SquareFragment::updateLoadStates)
+        }
+        lifecycleScope.launch {
             viewModel.getSquareFlow.collectLatest(squareAdapter::submitData)
         }
 
@@ -54,6 +60,12 @@ class SquareFragment : Fragment() {
             squareAdapter.refresh()
         }
 
+    }
+
+    private fun updateLoadStates(loadStates: CombinedLoadStates) {
+        binding.loadingContainer.apply {
+            loadingProgress.isVisible = squareAdapter.itemCount == 0 && loadStates.source.refresh is LoadState.Loading
+        }
     }
 
     override fun onDestroyView() {

@@ -21,11 +21,19 @@ class ProjectViewModel : ViewModel() {
             api.getProjectTitleList().let {
                 if (it.isSuccess()){
                     it.data.let { titles ->
-                        _projectTitles.value = titles
+                        var projects = mutableListOf<ProjectTitleModel>().apply {
+                            add(generateNewestProjectBean())
+                            addAll(titles)
+                        }
+                        _projectTitles.value = projects
                     }
                 }
             }
         }
     }
+
+    private fun generateNewestProjectBean() = ProjectTitleModel(
+        id = 0, name = "最新项目"
+    )
 
 }

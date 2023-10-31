@@ -14,5 +14,8 @@
     <string name="article_tag_new">新</string>
     <string name="hello_blank_fragment">hello_blank_fragment</string>
     <string name="hello_i_am_a_textview">Hello, I am a TextView</string>
+    <string name="empty_data_tips">暂无数据</string>
+    <string name="retry">重试</string>
+    <string name="item_footer_not_more">没有更多数据了</string>
 
 </resources>
