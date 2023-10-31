@@ -40,9 +40,11 @@ class ProjectFragment : Fragment() {
             tab.text = childAdapter.items[position].name
         }.attach()
 
+
         viewModel.projectTitleList.observe(viewLifecycleOwner){
             childAdapter.items = it
             childAdapter.notifyDataSetChanged()
+
         }
         viewModel.getProjectTitles()
     }

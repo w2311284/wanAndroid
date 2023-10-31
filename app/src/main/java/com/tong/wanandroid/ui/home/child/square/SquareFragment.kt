@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.databinding.FragmentSquareBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -55,6 +56,13 @@ class SquareFragment : Fragment() {
             viewModel.getSquareFlow.collectLatest(squareAdapter::submitData)
         }
 
+        squareAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    recycleView.scrollToPosition(0)
+                }
+            }
+        })
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
             squareAdapter.refresh()

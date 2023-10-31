@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.databinding.FragmentProjectChildBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -54,6 +55,14 @@ class ProjectChildFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getProjectListFlow.collectLatest(projectAdapter::submitData)
         }
+
+        projectAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    recycleView.scrollToPosition(0)
+                }
+            }
+        })
 
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false

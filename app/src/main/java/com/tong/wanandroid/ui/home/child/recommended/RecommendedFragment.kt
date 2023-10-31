@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -56,6 +57,15 @@ class RecommendedFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getArticlesFlow.collectLatest(homeAdapter::submitData)
         }
+
+        homeAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    recycleView.scrollToPosition(0)
+                }
+            }
+        })
+
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
             homeAdapter.refresh()

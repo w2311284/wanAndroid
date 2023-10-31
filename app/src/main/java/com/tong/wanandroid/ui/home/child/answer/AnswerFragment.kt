@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.databinding.FragmentAnswerBinding
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import com.tong.wanandroid.ui.home.child.square.SquareViewModel
@@ -49,6 +50,14 @@ class AnswerFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.getAnswerFlow.collectLatest(answerAdapter::submitData)
         }
+
+        answerAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                if (positionStart == 0) {
+                    recycleView.scrollToPosition(0)
+                }
+            }
+        })
 
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
