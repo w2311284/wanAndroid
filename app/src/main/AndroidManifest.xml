@@ -15,10 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WanAndroid"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.web.WebActivity"
+            android:exported="false"
+            android:label="@string/title_activity_web"
+            android:theme="@style/Theme.WanAndroid" />
+
         <service
             android:name=".common.services.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"

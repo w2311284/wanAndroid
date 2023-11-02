@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.databinding.FragmentProjectChildBinding
+import com.tong.wanandroid.ui.footer.FooterStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,9 @@ class ProjectChildFragment : Fragment() {
 
         recycleView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = projectAdapter
+            adapter = projectAdapter.withLoadStateFooter(
+                footer = FooterStateAdapter()
+            )
         }
         lifecycleScope.launch {
             viewModel.getProjectListFlow.collectLatest(projectAdapter::submitData)

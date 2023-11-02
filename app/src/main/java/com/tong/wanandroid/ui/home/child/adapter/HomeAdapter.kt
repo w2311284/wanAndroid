@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.DiffUtil
 import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.common.services.model.Banners
 import com.tong.wanandroid.databinding.ItemHomeArticleLayoutBinding
 import com.tong.wanandroid.databinding.ItemHomeBannerLayoutBinding
 import com.tong.wanandroid.ui.home.child.viewHolder.ArticleViewHolder
 import com.tong.wanandroid.ui.home.child.viewHolder.BannerViewHolder
 
-class HomeAdapter :
+class HomeAdapter(private val onClick: (ArticleAction) -> Unit) :
     PagingDataAdapter<Any, BaseViewHolder<*>>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -34,7 +35,7 @@ class HomeAdapter :
     private fun createVH(binding: ViewDataBinding, viewType: Int): BaseViewHolder<*> {
         return when (viewType) {
             VIEW_TYPE_Article -> ArticleViewHolder(binding as ItemHomeArticleLayoutBinding)
-            VIEW_TYPE_Banner -> BannerViewHolder(binding as ItemHomeBannerLayoutBinding)
+            VIEW_TYPE_Banner -> BannerViewHolder(binding as ItemHomeBannerLayoutBinding, onClick)
             // 添加更多的 ViewHolder 类
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -45,10 +46,24 @@ class HomeAdapter :
         val item = getItem(position)
         when (holder){
             is ArticleViewHolder ->{
-                holder.bind(item as ArticleModel)
+                var model = (item as ArticleModel)
+                holder.binding.apply {
+                    root.setOnClickListener {
+                        onClick(ArticleAction.ItemClick(position,model))
+                    }
+                    ivCollect.setOnClickListener {
+                        onClick(ArticleAction.CollectClick(position,model))
+                    }
+                    tvAuthor.setOnClickListener {
+                        onClick(ArticleAction.AuthorClick(position,model))
+                    }
+                }
+                holder.bind(model)
+
             }
             is BannerViewHolder -> {
-                holder.bind(item as Banners)
+                var model = (item as Banners)
+                holder.bind(model)
             }
         }
     }
@@ -77,4 +92,30 @@ class HomeAdapter :
             }
         }
     }
+}
+
+/**
+ * 文章行为
+ */
+sealed interface ArticleAction {
+
+    /**
+     * 主体点击
+     */
+    data class ItemClick(val position: Int, val article: ArticleModel) : ArticleAction
+
+    /**
+     * 收藏点击
+     */
+    data class CollectClick(val position: Int, val article: ArticleModel) : ArticleAction
+
+    /**
+     * 作者点击
+     */
+    data class AuthorClick(val position: Int, val article: ArticleModel) : ArticleAction
+
+    /**
+     * 作者点击
+     */
+    data class BannerClick(val position: Int, val banner: BannerModel) : ArticleAction
 }

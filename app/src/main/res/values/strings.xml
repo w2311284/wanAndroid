@@ -17,5 +17,13 @@
     <string name="empty_data_tips">暂无数据</string>
     <string name="retry">重试</string>
     <string name="item_footer_not_more">没有更多数据了</string>
+    <string name="title_activity_web">WebActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="collect">收藏</string>
+
 
 </resources>

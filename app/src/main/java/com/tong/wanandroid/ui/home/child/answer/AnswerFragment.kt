@@ -1,5 +1,7 @@
 package com.tong.wanandroid.ui.home.child.answer
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.FragmentAnswerBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import com.tong.wanandroid.ui.home.child.square.SquareViewModel
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,7 +32,7 @@ class AnswerFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val answerAdapter by lazy { HomeAdapter() }
+    private val answerAdapter by lazy { HomeAdapter(this@AnswerFragment::onItemClick) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +68,23 @@ class AnswerFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
             answerAdapter.refresh()
         }
+    }
+
+    private fun onItemClick(articleAction: ArticleAction) {
+        when (articleAction) {
+            is ArticleAction.ItemClick -> pushToDetailActivity(requireContext(),articleAction.article)
+            is ArticleAction.CollectClick -> null
+            is ArticleAction.AuthorClick -> null
+        }
+    }
+
+    private fun pushToDetailActivity(context: Context, article: ArticleModel) {
+        // 跳转到详情页面
+        val intent = Intent(context, WebActivity::class.java)
+        intent.putExtra("id", article.id)
+        intent.putExtra("link", article.link)
+        intent.putExtra("collect", article.collect)
+        startActivity(intent)
     }
 
 }

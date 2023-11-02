@@ -24,6 +24,7 @@ class RecommendedViewModel : ViewModel() {
             config = PagingConfig(
                 pageSize = pageSize,
                 initialLoadSize = pageSize,
+                prefetchDistance = 5,
                 enablePlaceholders = false
             )
         ){

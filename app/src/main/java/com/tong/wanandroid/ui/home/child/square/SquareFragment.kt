@@ -1,5 +1,7 @@
 package com.tong.wanandroid.ui.home.child.square
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,8 +14,11 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.FragmentSquareBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -29,7 +34,7 @@ class SquareFragment : Fragment() {
 
     private lateinit var viewModel: SquareViewModel
 
-    private val squareAdapter by lazy { HomeAdapter() }
+    private val squareAdapter by lazy { HomeAdapter(this@SquareFragment::onItemClick) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +73,23 @@ class SquareFragment : Fragment() {
             squareAdapter.refresh()
         }
 
+    }
+
+    private fun onItemClick(articleAction: ArticleAction) {
+        when (articleAction) {
+            is ArticleAction.ItemClick -> pushToDetailActivity(requireContext(),articleAction.article)
+            is ArticleAction.CollectClick -> null
+            is ArticleAction.AuthorClick -> null
+        }
+    }
+
+    private fun pushToDetailActivity(context: Context, article: ArticleModel) {
+        // 跳转到详情页面
+        val intent = Intent(context, WebActivity::class.java)
+        intent.putExtra("id", article.id)
+        intent.putExtra("link", article.link)
+        intent.putExtra("collect", article.collect)
+        startActivity(intent)
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

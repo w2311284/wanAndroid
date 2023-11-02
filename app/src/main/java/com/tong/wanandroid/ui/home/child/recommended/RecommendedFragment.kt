@@ -1,5 +1,7 @@
 package com.tong.wanandroid.ui.home.child.recommended
 
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,8 +14,13 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
+import com.tong.wanandroid.ui.footer.FooterStateAdapter
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -30,7 +37,7 @@ class RecommendedFragment : Fragment() {
     }
 
     private lateinit var viewModel: RecommendedViewModel
-    private val homeAdapter by lazy { HomeAdapter() }
+    private val homeAdapter by lazy { HomeAdapter(this@RecommendedFragment::onItemClick) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +56,9 @@ class RecommendedFragment : Fragment() {
 
         recycleView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = homeAdapter
+            adapter = homeAdapter.withLoadStateFooter(
+                footer = FooterStateAdapter()
+            )
         }
         lifecycleScope.launch {
             homeAdapter.loadStateFlow.collectLatest(this@RecommendedFragment::updateLoadStates)
@@ -66,10 +75,36 @@ class RecommendedFragment : Fragment() {
             }
         })
 
+
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = false
             homeAdapter.refresh()
         }
+    }
+
+    private fun onItemClick(articleAction: ArticleAction) {
+        when (articleAction) {
+            is ArticleAction.ItemClick -> pushToDetailActivity(articleAction.article)
+            is ArticleAction.CollectClick -> null
+            is ArticleAction.AuthorClick -> null
+            is ArticleAction.BannerClick -> pushToBanner(articleAction.banner)
+        }
+    }
+
+    private fun pushToDetailActivity(article: ArticleModel) {
+        // 跳转到详情页面
+        val intent = Intent(context, WebActivity::class.java)
+        intent.putExtra("id", article.id)
+        intent.putExtra("link", article.link)
+        intent.putExtra("collect", article.collect)
+        startActivity(intent)
+    }
+
+    private fun pushToBanner(banner: BannerModel) {
+        // 跳转到详情页面
+        val intent = Intent(context, WebActivity::class.java)
+        intent.putExtra("url", banner.url)
+        startActivity(intent)
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {
