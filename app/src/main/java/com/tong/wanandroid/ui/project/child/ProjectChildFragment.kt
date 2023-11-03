@@ -10,8 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.FragmentProjectChildBinding
 import com.tong.wanandroid.ui.footer.FooterStateAdapter
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -20,7 +23,7 @@ class ProjectChildFragment : Fragment() {
     private var _binding: FragmentProjectChildBinding? = null
     private val binding get() = _binding!!
 
-    private val projectAdapter by lazy { ProjectAdapter() }
+    private val projectAdapter by lazy { ProjectAdapter(this@ProjectChildFragment::onItemClick) }
 
     companion object {
         fun newInstance(categoryId: Int) = ProjectChildFragment().apply {
@@ -71,6 +74,20 @@ class ProjectChildFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
             projectAdapter.refresh()
         }
+    }
+
+    private fun onItemClick(articleAction: ArticleAction) {
+        when (articleAction) {
+            is ArticleAction.ItemClick -> pushToDetailActivity(articleAction.article)
+            is ArticleAction.CollectClick -> null
+            is ArticleAction.AuthorClick -> null
+            else -> null
+        }
+    }
+
+    private fun pushToDetailActivity(article: ArticleModel) {
+        // 跳转到详情页面
+        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
     }
 
 

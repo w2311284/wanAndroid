@@ -11,14 +11,24 @@ import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.ItemProjectArticleLayoutBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 
 
-class ProjectAdapter : PagingDataAdapter<Any, BaseViewHolder<*>>(DIFF_CALLBACK) {
+class ProjectAdapter(private val onClick: (ArticleAction) -> Unit) : PagingDataAdapter<Any, BaseViewHolder<*>>(DIFF_CALLBACK) {
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         val item = getItem(position)
         if (holder is ProjectArticleViewHolder){
-            holder.bind(item as ArticleModel)
+            val model =  item as ArticleModel
+            holder.bind(model)
+            holder.binding.apply {
+                root.setOnClickListener {
+                    onClick(ArticleAction.ItemClick(position,model))
+                }
+                projectCollect.setOnClickListener {
+                    onClick(ArticleAction.CollectClick(position,model))
+                }
+            }
         }
     }
 
@@ -43,7 +53,7 @@ class ProjectAdapter : PagingDataAdapter<Any, BaseViewHolder<*>>(DIFF_CALLBACK) 
 
 }
 
-class ProjectArticleViewHolder(private val binding: ItemProjectArticleLayoutBinding) : BaseViewHolder<ArticleModel>(binding) {
+class ProjectArticleViewHolder(val binding: ItemProjectArticleLayoutBinding) : BaseViewHolder<ArticleModel>(binding) {
     override fun bind(item: ArticleModel) {
         binding.article = item
 
