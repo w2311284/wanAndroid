@@ -24,7 +24,7 @@ class BannerViewHolder(val binding: ItemHomeBannerLayoutBinding,private val onCl
                             .load(data.imagePath)
                             .into(holder.imageView)
 
-                        setOnClickListener {
+                        holder.imageView.setOnClickListener {
                             onClick(ArticleAction.BannerClick(position,data))
                         }
 

@@ -33,7 +33,7 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/webTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -49,8 +49,6 @@
                     android:layout_marginStart="8dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/collect" />
-<!--                    android:src="@{intentObservable.collected?@drawable/ic_collect:@drawable/ic_un_collect}"-->
-<!--                    android:visibility="@{intentObservable.needShowCollectIcon?View.VISIBLE:View.GONE}" />-->
 
             </LinearLayout>
 
@@ -59,7 +57,7 @@
         <FrameLayout
             android:id="@+id/webContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1">
 
             <WebView

@@ -1,6 +1,5 @@
 package com.tong.wanandroid.ui.home.child.recommended
 
-import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -93,18 +92,12 @@ class RecommendedFragment : Fragment() {
 
     private fun pushToDetailActivity(article: ArticleModel) {
         // 跳转到详情页面
-        val intent = Intent(context, WebActivity::class.java)
-        intent.putExtra("id", article.id)
-        intent.putExtra("link", article.link)
-        intent.putExtra("collect", article.collect)
-        startActivity(intent)
+        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
     }
 
     private fun pushToBanner(banner: BannerModel) {
-        // 跳转到详情页面
-        val intent = Intent(context, WebActivity::class.java)
-        intent.putExtra("url", banner.url)
-        startActivity(intent)
+        // 跳转到banner
+        context?.let { WebActivity.loadUrl(it,banner.id,banner.url,false) }
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

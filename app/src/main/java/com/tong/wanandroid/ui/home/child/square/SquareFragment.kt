@@ -80,16 +80,13 @@ class SquareFragment : Fragment() {
             is ArticleAction.ItemClick -> pushToDetailActivity(requireContext(),articleAction.article)
             is ArticleAction.CollectClick -> null
             is ArticleAction.AuthorClick -> null
+            else -> null
         }
     }
 
     private fun pushToDetailActivity(context: Context, article: ArticleModel) {
         // 跳转到详情页面
-        val intent = Intent(context, WebActivity::class.java)
-        intent.putExtra("id", article.id)
-        intent.putExtra("link", article.link)
-        intent.putExtra("collect", article.collect)
-        startActivity(intent)
+        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

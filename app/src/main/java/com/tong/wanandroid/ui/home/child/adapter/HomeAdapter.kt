@@ -115,7 +115,7 @@ sealed interface ArticleAction {
     data class AuthorClick(val position: Int, val article: ArticleModel) : ArticleAction
 
     /**
-     * 作者点击
+     * Banner点击
      */
     data class BannerClick(val position: Int, val banner: BannerModel) : ArticleAction
 }
