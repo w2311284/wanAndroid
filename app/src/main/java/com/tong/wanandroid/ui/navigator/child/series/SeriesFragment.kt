@@ -1,4 +1,4 @@
-package com.tong.wanandroid.ui.profile
+package com.tong.wanandroid.ui.navigator.child.series
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,19 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.tong.wanandroid.R
 
-class ProfileFragment : Fragment() {
+class SeriesFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ProfileFragment()
+        fun newInstance() = SeriesFragment()
     }
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: SeriesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.fragment_series, container, false)
     }
 
 }

@@ -6,17 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.navigator.NavigatorFragment">
 
-    <TextView
-        android:id="@+id/text_notifications"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.project.NavigatorFragment">
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/NavigatorTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="center"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TabLayout.TextAppearance"
+            app:tabTextColor="?colorPrimary" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/NavigatorViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import com.tong.wanandroid.databinding.FragmentNavigatorBinding
 
 class NavigatorFragment : Fragment() {
@@ -22,18 +22,27 @@ class NavigatorFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val navigatorViewModel =
-            ViewModelProvider(this).get(NavigatorViewModel::class.java)
 
         _binding = FragmentNavigatorBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textNotifications
-        navigatorViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        initView()
+        return binding.root
     }
+
+    fun initView(){
+        val tabLayout = binding.NavigatorTabLayout
+        val viewPager = binding.NavigatorViewPager
+        val adapter = NavigatorViewPagerAdapter(generateTabs(),this.childFragmentManager,lifecycle)
+        viewPager.adapter = adapter
+        TabLayoutMediator(tabLayout,viewPager){ tab, position ->
+            tab.text = adapter.items[position]
+        }.attach()
+    }
+
+    private fun generateTabs() = listOf(
+        NavigatorViewPagerAdapter.NAVIGATOR_TAB_NAVIGATOR,
+        NavigatorViewPagerAdapter.NAVIGATOR_TAB_SERIES,
+        NavigatorViewPagerAdapter.NAVIGATOR_TAB_TUTORIAL
+    )
 
     override fun onDestroyView() {
         super.onDestroyView()
