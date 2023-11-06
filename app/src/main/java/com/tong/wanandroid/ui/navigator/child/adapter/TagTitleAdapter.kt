@@ -9,8 +9,9 @@ import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.common.services.model.SeriesModel
 import com.tong.wanandroid.databinding.ItemNavigatorTagLayoutBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 
-class TagTitleAdapter(private val items : List<Any>) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+class TagTitleAdapter(private val items : List<Any>,private val onClick: (Int) -> Unit): RecyclerView.Adapter<BaseViewHolder<*>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemNavigatorTagLayoutBinding>(layoutInflater, R.layout.item_navigator_tag_layout, parent, false)
@@ -21,11 +22,15 @@ class TagTitleAdapter(private val items : List<Any>) : RecyclerView.Adapter<Base
         return items.size
     }
 
-
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         if (holder is TagViewHolder){
             val item = items[position]
             holder.bind(item)
+            holder.binding.apply {
+                root.setOnClickListener {
+                    onClick(position)
+                }
+            }
         }
     }
 

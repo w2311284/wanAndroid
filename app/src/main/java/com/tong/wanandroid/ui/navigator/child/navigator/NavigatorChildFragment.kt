@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.databinding.FragmentNavigatorChildBinding
@@ -46,9 +47,9 @@ class NavigatorChildFragment : Fragment() {
 
     fun initView(){
         viewModel.navigationTagListLiveData.observe(viewLifecycleOwner){
-            binding.loadingContainer.loadingProgress.isVisible = false
             generateLeftGroup(it)
             generateChildList(it)
+            binding.loadingContainer.loadingProgress.isVisible = false
         }
         viewModel.getNavigationList()
     }
@@ -58,16 +59,35 @@ class NavigatorChildFragment : Fragment() {
         binding.tagChildrenList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tagChildrenAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (recyclerView.scrollState != RecyclerView.SCROLL_STATE_SETTLING){
+                       val pos = (recyclerView.layoutManager as? LinearLayoutManager)?.findFirstCompletelyVisibleItemPosition()
+                       pos?.let {
+                           tagChangeSelected(it)
+                       }
+                    }
+                }
+            })
         }
+
     }
-
-
 
     fun generateLeftGroup(tags: List<Any>){
         binding.leftTagList.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = TagTitleAdapter(tags)
+            adapter = TagTitleAdapter(tags, onClick = {onTagClick(it)})
         }
+    }
+
+    private fun onTagClick(pos: Int) {
+        val layoutManager = binding.tagChildrenList.layoutManager
+        layoutManager?.scrollToPosition(pos)
+    }
+
+    private fun tagChangeSelected(pos: Int){
+
     }
 
 }
