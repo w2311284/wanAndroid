@@ -44,6 +44,7 @@ class NavigatorFragment : Fragment() {
         NavigatorViewPagerAdapter.NAVIGATOR_TAB_TUTORIAL
     )
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

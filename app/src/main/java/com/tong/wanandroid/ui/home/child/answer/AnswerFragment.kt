@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.common.services.model.ArticleModel
@@ -53,8 +56,12 @@ class AnswerFragment : Fragment() {
             adapter = answerAdapter
         }
         lifecycleScope.launch {
+            answerAdapter.loadStateFlow.collectLatest(this@AnswerFragment::updateLoadStates)
+        }
+        lifecycleScope.launch {
             viewModel.getAnswerFlow.collectLatest(answerAdapter::submitData)
         }
+
 
         answerAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -82,6 +89,12 @@ class AnswerFragment : Fragment() {
     private fun pushToDetailActivity(context: Context, article: ArticleModel) {
         // 跳转到详情页面
         context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
+    }
+
+    private fun updateLoadStates(loadStates: CombinedLoadStates) {
+        binding.loadingContainer.apply {
+            loadingProgress.isVisible = answerAdapter.itemCount == 0 && loadStates.source.refresh is LoadState.Loading
+        }
     }
 
 }

@@ -54,13 +54,14 @@ class SquareFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = squareAdapter
         }
+
         lifecycleScope.launch {
             squareAdapter.loadStateFlow.collectLatest(this@SquareFragment::updateLoadStates)
         }
+
         lifecycleScope.launch {
             viewModel.getSquareFlow.collectLatest(squareAdapter::submitData)
         }
-
         squareAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 if (positionStart == 0) {

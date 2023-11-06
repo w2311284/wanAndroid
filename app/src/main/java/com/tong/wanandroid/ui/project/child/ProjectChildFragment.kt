@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.common.services.model.ArticleModel
@@ -58,9 +61,14 @@ class ProjectChildFragment : Fragment() {
                 footer = FooterStateAdapter()
             )
         }
+
+        lifecycleScope.launch {
+            projectAdapter.loadStateFlow.collectLatest(this@ProjectChildFragment::updateLoadStates)
+        }
         lifecycleScope.launch {
             viewModel.getProjectListFlow.collectLatest(projectAdapter::submitData)
         }
+
 
         projectAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver(){
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
@@ -88,6 +96,12 @@ class ProjectChildFragment : Fragment() {
     private fun pushToDetailActivity(article: ArticleModel) {
         // 跳转到详情页面
         context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
+    }
+
+    private fun updateLoadStates(loadStates: CombinedLoadStates) {
+        binding.loadingContainer.apply {
+            loadingProgress.isVisible = projectAdapter.itemCount == 0 && loadStates.source.refresh is LoadState.Loading
+        }
     }
 
 
