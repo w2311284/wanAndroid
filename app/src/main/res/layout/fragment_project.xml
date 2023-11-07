@@ -17,6 +17,7 @@
             android:id="@+id/projectTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabIndicatorFullWidth="false"
             app:tabGravity="center"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabLayout.TextAppearance"

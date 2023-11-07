@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             app:tabGravity="center"
             app:tabMode="scrollable"
+            app:tabIndicatorFullWidth="false"
             app:tabTextAppearance="@style/TabLayout.TextAppearance"
             app:tabTextColor="?colorPrimary" />
 

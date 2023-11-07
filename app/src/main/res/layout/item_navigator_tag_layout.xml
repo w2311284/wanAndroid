@@ -10,7 +10,7 @@
         android:id="@+id/tagTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checkable="true"
+        android:checkable="false"
         android:gravity="center"
         android:textAlignment="center"
         android:textSize="13sp"

@@ -13,11 +13,11 @@ import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.databinding.ItemNavigatorTagChildLayoutBinding
 
 
-class TagChildrenAdapter(private val items : List<Any>) : RecyclerView.Adapter<BaseViewHolder<*>>() {
+class TagChildrenAdapter(private val items : List<Any>,private val onTagChildrenClick: (Any) -> Unit) : RecyclerView.Adapter<BaseViewHolder<*>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ItemNavigatorTagChildLayoutBinding>(layoutInflater, R.layout.item_navigator_tag_child_layout, parent, false)
-        return TagChildViewHolder(binding)
+        return TagChildViewHolder(binding,onTagChildrenClick)
     }
 
     override fun getItemCount(): Int {
@@ -33,7 +33,7 @@ class TagChildrenAdapter(private val items : List<Any>) : RecyclerView.Adapter<B
 
 }
 
-class TagChildViewHolder(val binding: ItemNavigatorTagChildLayoutBinding) : BaseViewHolder<Any>(binding){
+class TagChildViewHolder(val binding: ItemNavigatorTagChildLayoutBinding,private val onTagChildrenClick: (Any) -> Unit) : BaseViewHolder<Any>(binding){
     override fun bind(item: Any) {
         binding.apply {
             executePendingBindings()
@@ -51,6 +51,7 @@ class TagChildViewHolder(val binding: ItemNavigatorTagChildLayoutBinding) : Base
                         textSize = 13F
 
                     }
+                    chip.setOnClickListener { onTagChildrenClick(article) }
                     chip.text = article.title
                     tagChildrenLayout.addView(chip)
                 }

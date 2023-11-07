@@ -11,12 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.R
+import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.databinding.FragmentNavigatorChildBinding
 import com.tong.wanandroid.ui.navigator.child.adapter.TagChildrenAdapter
 import com.tong.wanandroid.ui.navigator.child.adapter.TagTitleAdapter
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -55,7 +58,7 @@ class NavigatorChildFragment : Fragment() {
     }
 
     fun generateChildList(tags: List<Any>){
-        tagChildrenAdapter = TagChildrenAdapter(tags)
+        tagChildrenAdapter = TagChildrenAdapter(tags, onTagChildrenClick = {onTagChildrenItemClick(it)})
         binding.tagChildrenList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = tagChildrenAdapter
@@ -82,12 +85,24 @@ class NavigatorChildFragment : Fragment() {
     }
 
     private fun onTagClick(pos: Int) {
+
+        val smoothScroller = object : LinearSmoothScroller(this.context) {
+            override fun getVerticalSnapPreference(): Int = SNAP_TO_START
+            override fun getHorizontalSnapPreference() = SNAP_TO_START
+        }
+        smoothScroller.targetPosition = pos
         val layoutManager = binding.tagChildrenList.layoutManager
-        layoutManager?.scrollToPosition(pos)
+        layoutManager?.startSmoothScroll(smoothScroller)
     }
 
     private fun tagChangeSelected(pos: Int){
 
+    }
+
+    private fun onTagChildrenItemClick(m : Any){
+        if(m is ArticleModel){
+            context?.let { WebActivity.loadUrl(it,m.id,m.link,m.collect) }
+        }
     }
 
 }

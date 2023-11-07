@@ -14,10 +14,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorFullWidth="false"
         app:tabGravity="center"
         app:tabMode="scrollable"
         app:tabTextAppearance="@style/TabLayout.TextAppearance"
-        app:tabTextColor="?colorPrimary" />
+        app:tabTextColor="?colorPrimary"
+        />
 
     <ImageButton
         android:id="@+id/searchIcon"
