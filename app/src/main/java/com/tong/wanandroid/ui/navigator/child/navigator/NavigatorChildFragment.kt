@@ -7,21 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
-import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.databinding.FragmentNavigatorChildBinding
 import com.tong.wanandroid.ui.navigator.child.adapter.TagChildrenAdapter
 import com.tong.wanandroid.ui.navigator.child.adapter.TagTitleAdapter
 import com.tong.wanandroid.ui.web.WebActivity
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class NavigatorChildFragment : Fragment() {
 
@@ -48,7 +41,7 @@ class NavigatorChildFragment : Fragment() {
         return binding.root
     }
 
-    fun initView(){
+    private fun initView(){
         viewModel.navigationTagListLiveData.observe(viewLifecycleOwner){
             generateLeftGroup(it)
             generateChildList(it)

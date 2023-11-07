@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
+import com.tong.wanandroid.common.services.model.ClassifyModel
 import com.tong.wanandroid.common.services.model.NavigationModel
+import com.tong.wanandroid.common.services.model.SeriesModel
 import com.tong.wanandroid.databinding.ItemNavigatorTagChildLayoutBinding
 
 
@@ -53,6 +55,24 @@ class TagChildViewHolder(val binding: ItemNavigatorTagChildLayoutBinding,private
                     }
                     chip.setOnClickListener { onTagChildrenClick(article) }
                     chip.text = article.title
+                    tagChildrenLayout.addView(chip)
+                }
+            }
+            if(item is SeriesModel){
+                tagChildTitle.text = item.name
+                item.children.forEach { classify ->
+                    val chip = Chip(this.root.context,null).apply {
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        setPadding(6)
+                        gravity = Gravity.CENTER
+                        textSize = 13F
+
+                    }
+                    chip.setOnClickListener { onTagChildrenClick(classify) }
+                    chip.text = classify.name
                     tagChildrenLayout.addView(chip)
                 }
             }
