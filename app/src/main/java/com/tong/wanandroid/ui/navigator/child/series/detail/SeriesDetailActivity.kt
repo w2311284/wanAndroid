@@ -53,6 +53,10 @@ class SeriesDetailActivity : AppCompatActivity() {
         val recycleView = binding.seriesDetailList
         val swipeRefreshLayout = binding.seriesDetailRefreshLayout
 
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         recycleView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = detailsAdapter.withLoadStateFooter(

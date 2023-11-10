@@ -97,6 +97,7 @@ class SeriesFragment : Fragment() {
         if(m is ClassifyModel){
             startActivity(Intent(context,SeriesDetailActivity::class.java).apply {
                 putExtra(SeriesDetailActivity.series_detail_id,m.id)
+                putExtra(SeriesDetailActivity.series_detail_title,m.name)
             })
         }
     }
