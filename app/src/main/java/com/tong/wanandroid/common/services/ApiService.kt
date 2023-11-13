@@ -127,4 +127,23 @@ interface ApiService {
     ): NetworkResponse<PageModel<ArticleModel>>
 
 
+    /***********   公众号   ***********/
+
+    /**
+     * 公众号作者列表
+     */
+    @GET("wxarticle/chapters/json")
+    suspend fun getAuthorTitleList(): NetworkResponse<List<ClassifyModel>>
+
+    /**
+     * 对于id作者的文章
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    suspend fun getAuthorArticles(
+        @Path("id") id: Int,
+        @Path("page") page: Int,
+        @Query("page_size") pageSize: Int
+    ): NetworkResponse<PageModel<ArticleModel>>
+
+
 }
