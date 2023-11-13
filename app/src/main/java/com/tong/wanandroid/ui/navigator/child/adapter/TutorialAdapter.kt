@@ -25,6 +25,11 @@ class TutorialAdapter(private val items : List<ClassifyModel>,private val onClic
         if (holder is TutorialViewHolder){
             val item = items[position]
             holder.bind(item)
+            holder.binding.apply {
+                root.setOnClickListener {
+                    onClick(holder.bindingAdapterPosition, item)
+                }
+            }
         }
     }
 
@@ -33,11 +38,11 @@ class TutorialAdapter(private val items : List<ClassifyModel>,private val onClic
 class TutorialViewHolder(val binding: ItemNavigatorChildTutorialLayoutBinding) : BaseViewHolder<ClassifyModel>(binding){
     override fun bind(item: ClassifyModel) {
         binding.classify = item
-//        binding.apply{
-//            Glide.with(binding.ivProject)
-//                .load(item.cover)
-//                .into(binding.ivProject)
-//        }
+        binding.apply{
+            Glide.with(binding.ivProject.context)
+                .load(item.cover)
+                .into(binding.ivProject)
+        }
         binding.executePendingBindings()
     }
 }

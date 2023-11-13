@@ -1,5 +1,6 @@
 package com.tong.wanandroid.ui.navigator.child.tutorial
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,9 @@ import com.tong.wanandroid.common.services.model.ClassifyModel
 import com.tong.wanandroid.databinding.FragmentSeriesBinding
 import com.tong.wanandroid.databinding.FragmentTutorialBinding
 import com.tong.wanandroid.ui.navigator.child.adapter.TutorialAdapter
+import com.tong.wanandroid.ui.navigator.child.series.detail.SeriesDetailActivity
+import com.tong.wanandroid.ui.navigator.child.tutorial.child.TutorialChapterActivity
+import com.tong.wanandroid.ui.project.child.ProjectAdapter
 
 class TutorialFragment : Fragment() {
 
@@ -36,6 +40,13 @@ class TutorialFragment : Fragment() {
     }
 
     private fun initView(){
+
+        val swipeRefreshLayout = binding.tutorialRefreshLayout
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+        }
+
         viewModel.tutorialListLiveData.observe(viewLifecycleOwner){
             binding.loadingContainer.loadingProgress.isVisible = false
             binding.tutorialList.apply {
@@ -47,7 +58,10 @@ class TutorialFragment : Fragment() {
     }
 
     private fun onItemClick(pos: Int,m: ClassifyModel) {
-
+        startActivity(Intent(context, TutorialChapterActivity::class.java).apply {
+            putExtra(TutorialChapterActivity.tutorial_chapter_id,m.id)
+            putExtra(TutorialChapterActivity.tutorial_chapter_title,m.name)
+        })
     }
 
 }
