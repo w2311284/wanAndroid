@@ -4,11 +4,17 @@ import com.tong.wanandroid.common.services.http.NetworkResponse
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.common.services.model.ClassifyModel
+import com.tong.wanandroid.common.services.model.HotKeyModel
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.common.services.model.PageModel
 import com.tong.wanandroid.common.services.model.ProjectTitleModel
 import com.tong.wanandroid.common.services.model.SeriesModel
+import com.tong.wanandroid.common.services.model.UserBaseModel
+import com.tong.wanandroid.common.services.model.UserModel
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -144,6 +150,58 @@ interface ApiService {
         @Path("page") page: Int,
         @Query("page_size") pageSize: Int
     ): NetworkResponse<PageModel<ArticleModel>>
+
+    /***********   搜索   ***********/
+
+    /**
+     * 热搜词
+     */
+    @GET("hotkey/json")
+    suspend fun getSearchHotKey(): NetworkResponse<List<HotKeyModel>>
+
+    /**
+     * 搜索
+     */
+    @POST("article/query/{page}/json")
+    @FormUrlEncoded
+    suspend fun queryBySearchKey(
+        @Path("page") page: Int,
+        @Field("k") key: String
+    ): NetworkResponse<PageModel<ArticleModel>>
+
+
+    /***********   用户中心   ***********/
+
+
+    /**
+     * 登录
+     */
+    @FormUrlEncoded
+    @POST("user/login")
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): NetworkResponse<UserModel>
+
+    @GET("user/logout/json")
+    suspend fun logout(): NetworkResponse<Any>
+
+    /**
+     * 注册
+     */
+    @FormUrlEncoded
+    @POST("user/register")
+    suspend fun register(
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("repassword") confirmPassword: String
+    ): NetworkResponse<Any>
+
+    /**
+     * 获取用户信息
+     */
+    @GET("user/lg/userinfo/json")
+    suspend fun getUserInfo(): NetworkResponse<UserBaseModel>
 
 
 }

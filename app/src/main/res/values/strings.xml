@@ -24,6 +24,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="collect">收藏</string>
+    <string name="search_hint">搜索关键词</string>
+    <string name="profile_user_name">用户名: %s</string>
+    <string name="profile_user_id">id: %s</string>
+    <string name="profile_user_coin_and_rank">积分: %s 等级: %s 排名: %s</string>
+    <string name="user_coin_level">等级: %s</string>
+    <string name="user_coin_rank">排名: %s</string>
+    <string name="not_login">未登录</string>
+
+    <string name="search_hotkey_title">搜索热词</string>
+    <string name="search_history_title">搜索历史</string>
 
 
 </resources>
