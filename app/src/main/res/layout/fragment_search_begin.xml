@@ -24,12 +24,11 @@
                 android:textColor="@color/md_theme_on_surface"
                 android:textSize="16sp" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/hotkeyList"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp" />
+                android:layout_height="wrap_content" />
+
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/Widget.MaterialComponents.TextView"
