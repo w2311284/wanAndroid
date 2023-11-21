@@ -1,22 +1,22 @@
 package com.tong.wanandroid.ui.search.child
 
-import androidx.lifecycle.ViewModelProvider
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
-import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.HotKeyModel
-import com.tong.wanandroid.databinding.FragmentProjectChildBinding
 import com.tong.wanandroid.databinding.FragmentSearchBeginBinding
-import com.tong.wanandroid.ui.project.child.ProjectChildViewModel
 import com.tong.wanandroid.ui.search.SearchViewModel
 import com.tong.wanandroid.ui.search.child.adapter.SearchHistoryAdaper
+
 
 class SearchBeginFragment : Fragment() {
 
@@ -35,7 +35,8 @@ class SearchBeginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+
+        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
         _binding = FragmentSearchBeginBinding.inflate(inflater, container, false)
         initView()
         return binding.root
@@ -78,7 +79,6 @@ class SearchBeginFragment : Fragment() {
     }
 
     private fun onHistoryClick(pos: Int,search: String) {
-//        viewModel.search(search)
         viewModel.shortcutSearch(search)
     }
     private fun onDeleteClick(pos: Int,search: String) {
@@ -86,7 +86,6 @@ class SearchBeginFragment : Fragment() {
     }
 
     private fun onHotKeyClick(hotKey: HotKeyModel) {
-//        viewModel.search(hotKey.name)
         viewModel.shortcutSearch(hotKey.name)
     }
 

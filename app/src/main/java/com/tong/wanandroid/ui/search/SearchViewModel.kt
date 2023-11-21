@@ -24,8 +24,6 @@ class SearchViewModel : ViewModel() {
 
     private val api = RetrofitManager.create(ApiService::class.java)
 
-//    private val _shortcutSearch = Channel<String>(Channel.CONFLATED)
-//    val shortcutSearch = _shortcutSearch.receiveAsFlow()
 
     private val _shortcutSearchLiveData = MutableLiveData<String>()
     val shortcutSearchLiveData: LiveData<String> = _shortcutSearchLiveData

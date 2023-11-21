@@ -37,7 +37,7 @@ class SearchResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         initView()
         return binding.root

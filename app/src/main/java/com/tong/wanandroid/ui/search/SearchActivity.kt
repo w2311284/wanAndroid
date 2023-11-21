@@ -32,6 +32,8 @@ class SearchActivity : AppCompatActivity() {
         _binding = ActivitySearchBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
+        initView()
+
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
@@ -52,7 +54,7 @@ class SearchActivity : AppCompatActivity() {
                     ?: searchResultFragment
         }
 
-        initView()
+
     }
 
     private fun initView(){
