@@ -183,6 +183,9 @@ interface ApiService {
         @Field("password") password: String
     ): NetworkResponse<UserModel>
 
+    /**
+     * 登出
+     */
     @GET("user/logout/json")
     suspend fun logout(): NetworkResponse<Any>
 
