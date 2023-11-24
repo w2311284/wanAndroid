@@ -92,12 +92,12 @@ class RecommendedFragment : Fragment() {
 
     private fun pushToDetailActivity(article: ArticleModel) {
         // 跳转到详情页面
-        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
+        WebActivity.loadUrl(requireContext(),article.id,article.link,article.collect)
     }
 
     private fun pushToBanner(banner: BannerModel) {
         // 跳转到banner
-        context?.let { WebActivity.loadUrl(it,banner.id,banner.url,false) }
+        WebActivity.loadUrl(requireContext(),banner.id,banner.url,false)
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

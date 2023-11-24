@@ -1,10 +1,16 @@
 package com.tong.wanandroid.ui.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.tong.wanandroid.common.store.UserInfoManager
 import com.tong.wanandroid.databinding.ActivityLoginBinding
+import com.tong.wanandroid.ui.register.RegisterActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,21 +33,29 @@ class LoginActivity : AppCompatActivity() {
     private fun initView(){
         viewModel.loginLiveData.observe(this@LoginActivity) {
             updateLoginLoadingStatus(false)
+            lifecycleScope.launch {
+                UserInfoManager.getInstance(this@LoginActivity).setLoggedInState(true)
+            }
             if (it.isSuccess()) finish()
+
         }
+        binding.viewModel = viewModel
         binding.backIcon.setOnClickListener {
             finish()
-        }
-        binding.register.setOnClickListener {
-
         }
         binding.loginButton.setOnClickListener {
             updateLoginLoadingStatus(true)
             viewModel.loginIn(viewModel.userNameObservable.get().toString(),viewModel.passwordObservable.get().toString())
+        }
+        binding.register.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
     private fun updateLoginLoadingStatus(isLoading: Boolean) {
         binding.loginLoading.isVisible = isLoading
     }
+
+
 }

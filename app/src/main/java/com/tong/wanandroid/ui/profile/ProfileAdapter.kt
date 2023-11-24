@@ -23,7 +23,13 @@ class ProfileAdapter(var items: List<ProfileItemModel>, private val onClick: (In
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
         if (holder is ProfileViewHolder){
-            holder.bind(items[position])
+            val item =  items[position]
+            holder.bind(item)
+            holder.binding.apply {
+                root.setOnClickListener {
+                    onClick(holder.bindingAdapterPosition, item)
+                }
+            }
         }
     }
 }

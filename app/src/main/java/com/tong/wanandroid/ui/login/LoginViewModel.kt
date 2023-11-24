@@ -30,8 +30,6 @@ class LoginViewModel : ViewModel() {
     private val _loginLiveData = MutableLiveData<NetworkResponse<UserModel>>()
     val loginLiveData: LiveData<NetworkResponse<UserModel>> = _loginLiveData
 
-
-
     fun loginIn(usermane: String,password: String){
         viewModelScope.launch {
             api.login(usermane,password).let {
