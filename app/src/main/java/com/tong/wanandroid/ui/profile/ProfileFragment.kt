@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ProfileItemModel
-import com.tong.wanandroid.common.store.UserInfoManager
+import com.tong.wanandroid.common.datastore.UserInfoManager
 import com.tong.wanandroid.databinding.FragmentProfileBinding
 import com.tong.wanandroid.ui.login.LoginActivity
 import kotlinx.coroutines.flow.launchIn
@@ -43,6 +43,11 @@ class ProfileFragment : Fragment() {
 
         initView()
         initItems()
+
+        //清理登录状态
+        lifecycleScope.launch {
+            UserInfoManager.getInstance(requireContext()).setLoggedInState(false)
+        }
 
         return binding.root
     }

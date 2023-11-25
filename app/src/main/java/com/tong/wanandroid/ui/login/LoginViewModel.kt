@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
 
-    private val api = RetrofitManager.create(ApiService::class.java)
+    private val service = RetrofitManager.create(ApiService::class.java)
 
     val userNameObservable = ObservableField<String>()
     val passwordObservable = ObservableField<String>()
@@ -32,7 +32,7 @@ class LoginViewModel : ViewModel() {
 
     fun loginIn(usermane: String,password: String){
         viewModelScope.launch {
-            api.login(usermane,password).let {
+            service.login(usermane,password).let {
                 if (it.isSuccess()){
                     _loginLiveData.value = it
                 }

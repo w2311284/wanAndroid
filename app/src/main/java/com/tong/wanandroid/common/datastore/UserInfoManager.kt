@@ -1,4 +1,4 @@
-package com.tong.wanandroid.common.store
+package com.tong.wanandroid.common.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 class UserInfoManager private constructor(private val context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_info")
+
 
     companion object {
         @Volatile
@@ -31,6 +32,12 @@ class UserInfoManager private constructor(private val context: Context) {
     suspend fun cacheUserBaseInfo(user: UserBaseModel) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.USER_INFO] = Gson().toJson(user)
+        }
+    }
+
+    suspend fun clearUserBaseInfo() {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.USER_INFO] = ""
         }
     }
 

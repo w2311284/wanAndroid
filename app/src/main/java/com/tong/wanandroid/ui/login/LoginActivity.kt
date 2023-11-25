@@ -6,10 +6,9 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.tong.wanandroid.common.store.UserInfoManager
+import com.tong.wanandroid.common.datastore.UserInfoManager
 import com.tong.wanandroid.databinding.ActivityLoginBinding
 import com.tong.wanandroid.ui.register.RegisterActivity
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
