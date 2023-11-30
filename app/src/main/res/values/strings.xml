@@ -50,5 +50,8 @@
     <string name="register_success">注册成功！</string>
     <string name="account_need_login">请先登录！</string>
 
+    <string name="content_description_coin_rules">积分规则</string>
+    <string name="content_description_coin_ranking">积分排行榜</string>
+
 
 </resources>

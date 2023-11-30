@@ -4,6 +4,8 @@ import com.tong.wanandroid.common.services.http.NetworkResponse
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.common.services.model.ClassifyModel
+import com.tong.wanandroid.common.services.model.CoinHistoryModel
+import com.tong.wanandroid.common.services.model.CoinModel
 import com.tong.wanandroid.common.services.model.HotKeyModel
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.common.services.model.PageModel
@@ -205,6 +207,12 @@ interface ApiService {
      */
     @GET("user/lg/userinfo/json")
     suspend fun getUserInfo(): NetworkResponse<UserBaseModel>
+
+    @GET("/lg/coin/list/{page}/json")
+    suspend fun getMyCoinList(@Path("page") page: Int): NetworkResponse<PageModel<CoinHistoryModel>>
+
+    @GET("coin/rank/{page}/json")
+    suspend fun getCoinRanking(@Path("page") page: Int): NetworkResponse<PageModel<CoinModel>>
 
 
 }

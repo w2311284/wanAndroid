@@ -16,6 +16,12 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".ui.coin.rank.CoinRankActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.coin.MyCoinInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
         <activity
