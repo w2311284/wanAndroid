@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.tong.wanandroid.common.datastore.UserInfoManager
+import com.tong.wanandroid.common.datastore.DataStoreManager
 import com.tong.wanandroid.databinding.ActivityLoginBinding
 import com.tong.wanandroid.ui.register.RegisterActivity
 import kotlinx.coroutines.launch
@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginLiveData.observe(this@LoginActivity) {
             updateLoginLoadingStatus(false)
             lifecycleScope.launch {
-                UserInfoManager.getInstance(this@LoginActivity).setLoggedInState(true)
+                DataStoreManager.getInstance(this@LoginActivity).setLoggedIn(true)
             }
             if (it.isSuccess()) finish()
 

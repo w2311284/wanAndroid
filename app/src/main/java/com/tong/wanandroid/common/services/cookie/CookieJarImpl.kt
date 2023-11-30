@@ -1,15 +1,15 @@
 package com.tong.wanandroid.common.services.cookie
 
-import android.util.Log
 import com.tong.wanandroid.common.services.http.RetrofitManager
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
-import java.util.concurrent.ConcurrentHashMap
 
+const val COOKIE_LOGIN_USER_NAME = "loginUserName_wanandroid_com"
+const val COOKIE_LOGIN_USER_TOKEN = "token_pass_wanandroid_com"
 class CookieJarImpl : CookieJar {
 
-    private val cookieStore = mutableListOf<Cookie>()
+    val cookieStore = mutableListOf<Cookie>()
 
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
@@ -24,5 +24,19 @@ class CookieJarImpl : CookieJar {
         val (expiredCookies, validCookies) = cookies.partition { it.expiresAt < System.currentTimeMillis() }
         cookieStore.removeAll(expiredCookies)
         cookieStore.addAll(validCookies.filter { it.persistent })
+    }
+
+    fun isLoginCookieValid(): Boolean {
+        var isUserNameValid = false
+        var isUserTokenValid = false
+        RetrofitManager.cookieJar.cookieStore.forEach {
+            if (it.name == COOKIE_LOGIN_USER_NAME) {
+                isUserNameValid = it.value.isNotBlank()
+            }
+            if (it.name == COOKIE_LOGIN_USER_TOKEN) {
+                isUserTokenValid = it.value.isNotBlank()
+            }
+        }
+        return isUserNameValid && isUserTokenValid
     }
 }

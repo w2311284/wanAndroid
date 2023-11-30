@@ -12,20 +12,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ProfileItemModel
-import com.tong.wanandroid.common.datastore.UserInfoManager
+import com.tong.wanandroid.common.datastore.DataStoreManager
+import com.tong.wanandroid.common.services.model.UserBaseModel
 import com.tong.wanandroid.databinding.FragmentProfileBinding
+import com.tong.wanandroid.ui.coin.MyCoinInfoActivity
 import com.tong.wanandroid.ui.login.LoginActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-
     private lateinit var profileAdapter : ProfileAdapter
+
+//    private lateinit var dataStoreManager: DataStoreManager
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -40,25 +46,20 @@ class ProfileFragment : Fragment() {
         viewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
+//        dataStoreManager =  DataStoreManager.getInstance(requireContext())
         initView()
         initItems()
-
-        //清理登录状态
-        lifecycleScope.launch {
-            UserInfoManager.getInstance(requireContext()).setLoggedInState(false)
-        }
 
         return binding.root
     }
 
     private fun initView(){
         profileAdapter = ProfileAdapter(emptyList(), onClick = { pos,item -> onItemClick(pos,item)})
-
+        binding.user = UserBaseModel()
         viewModel.userInfoLiveData.observe(viewLifecycleOwner){
             binding.user = it
             lifecycleScope.launch {
-                UserInfoManager.getInstance(requireContext()).cacheUserBaseInfo(it)
+                DataStoreManager.getInstance(requireContext()).cacheUserBaseInfo(it)
             }
         }
 
@@ -67,6 +68,18 @@ class ProfileFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 adapter = profileAdapter
             }
+
+            appBarLayout.addOnOffsetChangedListener{ appBarLayout, verticalOffset ->
+                when {
+                    verticalOffset == 0 -> viewModel.collapsingToolBarStateFlow.value =
+                        CollapsingToolBarState.EXPANDED
+                    abs(verticalOffset) >= appBarLayout.totalScrollRange -> viewModel.collapsingToolBarStateFlow.value =
+                        CollapsingToolBarState.COLLAPSED
+                    else -> viewModel.collapsingToolBarStateFlow.value =
+                        CollapsingToolBarState.INTERMEDIATE
+                }
+            }
+
             arrayOf(userAvatar, userName, userId, userCoinCount).forEach {
                 it.setOnClickListener {
                     checkLogin {}
@@ -74,23 +87,35 @@ class ProfileFragment : Fragment() {
             }
             userCoinCount.setOnClickListener {
                 checkLogin {
-
+                    requireContext().startActivity(Intent(context, MyCoinInfoActivity::class.java))
                 }
             }
         }
 
-        var isLoggedInFlow = UserInfoManager.getInstance(requireContext()).isLogIn
+        lifecycleScope.launch {
+            viewModel.collapsingToolBarStateFlow.distinctUntilChanged { old, new ->
+                old == new
+            }.collectLatest {
+                if (it == CollapsingToolBarState.COLLAPSED) {
+                    binding.collapsingToolbarLayout.title =
+                        binding.user?.userInfo?.nickname
+                } else binding.collapsingToolbarLayout.title = ""
+            }
+        }
 
-        isLoggedInFlow?.onEach { loggedIn ->
-            if (loggedIn){
-                viewModel.getUserInfo()
+        DataStoreManager.getInstance(requireContext()).isLogIn.onEach {
+            if (it){
                 viewModel.isLogin = true
+                viewModel.getUserInfo()
             }else{
                 viewModel.isLogin = false
             }
-        }?.launchIn(lifecycleScope)
+        }.launchIn(lifecycleScope)
 
-
+        lifecycleScope.launch {
+            val isLogin = viewModel.getLoginCache(requireContext())
+            DataStoreManager.getInstance(requireContext()).setLoggedIn(isLogin)
+        }
     }
 
     private fun initItems() {
