@@ -19,6 +19,12 @@ class WebActivity : AppCompatActivity() {
         private const val extra_id = "id"
         private const val extra_collect = "collect"
 
+        fun loadUrl(context: Context, url: String) {
+            val intent = Intent(context, WebActivity::class.java)
+            intent.putExtra(extra_url, url)
+            context.startActivity(intent)
+        }
+
         fun loadUrl(context: Context, id: Int, url: String, isCollect: Boolean) {
             val intent = Intent(context, WebActivity::class.java)
             intent.putExtra(extra_id, id)

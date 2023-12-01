@@ -7,6 +7,7 @@ import com.tong.wanandroid.common.services.model.ClassifyModel
 import com.tong.wanandroid.common.services.model.CoinHistoryModel
 import com.tong.wanandroid.common.services.model.CoinModel
 import com.tong.wanandroid.common.services.model.HotKeyModel
+import com.tong.wanandroid.common.services.model.MessageModel
 import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.common.services.model.PageModel
 import com.tong.wanandroid.common.services.model.ProjectTitleModel
@@ -213,6 +214,24 @@ interface ApiService {
 
     @GET("coin/rank/{page}/json")
     suspend fun getCoinRanking(@Path("page") page: Int): NetworkResponse<PageModel<CoinModel>>
+
+    /**
+     * 未读消息数量
+     */
+    @GET("message/lg/count_unread/json")
+    suspend fun getUnreadMessageCount(): NetworkResponse<Int>
+
+    /**
+     * 已读消息列表
+     */
+    @GET("message/lg/readed_list/{page}/json")
+    suspend fun getReadiedMessageList(@Path("page") page: Int): NetworkResponse<PageModel<MessageModel>>
+
+    /**
+     * 未读消息列表
+     */
+    @GET("message/lg/unread_list//{page}/json")
+    suspend fun getUnReadMessageList(@Path("page") page: Int): NetworkResponse<PageModel<MessageModel>>
 
 
 }

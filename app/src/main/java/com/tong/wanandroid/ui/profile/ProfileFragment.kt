@@ -17,6 +17,7 @@ import com.tong.wanandroid.common.services.model.UserBaseModel
 import com.tong.wanandroid.databinding.FragmentProfileBinding
 import com.tong.wanandroid.ui.coin.MyCoinInfoActivity
 import com.tong.wanandroid.ui.login.LoginActivity
+import com.tong.wanandroid.ui.message.MessageActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -135,11 +136,8 @@ class ProfileFragment : Fragment() {
         when (item.title) {
             getString(R.string.profile_item_title_message) -> {
                 checkLogin {
-
+                    requireContext().startActivity(Intent(context, MessageActivity::class.java))
                 }
-//                check {
-//                    startActivity(Intent(requireContext(), MessageActivity::class.java))
-//                }
             }
             getString(R.string.profile_item_title_share) -> {
                 checkLogin {

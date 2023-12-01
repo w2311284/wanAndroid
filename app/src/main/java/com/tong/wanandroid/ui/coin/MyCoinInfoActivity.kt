@@ -45,7 +45,7 @@ class MyCoinInfoActivity : AppCompatActivity() {
             finish()
         }
         binding.coinRulesHelp.setOnClickListener {
-            WebActivity.loadUrl(this,0,"https://www.wanandroid.com/blog/show/2653",false)
+            WebActivity.loadUrl(this,"https://www.wanandroid.com/blog/show/2653")
         }
         binding.coinRanking.setOnClickListener {
             startActivity(Intent(this, CoinRankActivity::class.java))
