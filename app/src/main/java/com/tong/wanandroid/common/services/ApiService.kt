@@ -12,6 +12,7 @@ import com.tong.wanandroid.common.services.model.NavigationModel
 import com.tong.wanandroid.common.services.model.PageModel
 import com.tong.wanandroid.common.services.model.ProjectTitleModel
 import com.tong.wanandroid.common.services.model.SeriesModel
+import com.tong.wanandroid.common.services.model.ShareModel
 import com.tong.wanandroid.common.services.model.UserBaseModel
 import com.tong.wanandroid.common.services.model.UserModel
 import retrofit2.http.Field
@@ -232,6 +233,22 @@ interface ApiService {
      */
     @GET("message/lg/unread_list//{page}/json")
     suspend fun getUnReadMessageList(@Path("page") page: Int): NetworkResponse<PageModel<MessageModel>>
+
+
+    /**
+     * 我的分享文章列表
+     */
+    @GET("user/lg/private_articles/{page}/json")
+    suspend fun getMyShareList(@Path("page") page: Int): NetworkResponse<ShareModel>
+
+    /**
+     * 对应用户的分享文章列表
+     */
+    @GET("user/{userId}/share_articles/{page}/json")
+    suspend fun getUserShareList(
+        @Path("userId") userId: String,
+        @Path("page") page: Int
+    ): NetworkResponse<ShareModel>
 
 
 }

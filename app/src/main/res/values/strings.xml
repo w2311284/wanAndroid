@@ -53,5 +53,7 @@
     <string name="content_description_coin_rules">积分规则</string>
     <string name="content_description_coin_ranking">积分排行榜</string>
 
+    <string name="share_count_description">分享了%s篇文章</string>
+
 
 </resources>

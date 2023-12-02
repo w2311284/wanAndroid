@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 
 class MyCoinInfoActivity : AppCompatActivity() {
     private var _binding: ActivityMyCoinInfoBinding? = null
-
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MyCoinInfoViewModel

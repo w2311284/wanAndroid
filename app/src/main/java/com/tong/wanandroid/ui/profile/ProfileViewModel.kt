@@ -43,6 +43,8 @@ class ProfileViewModel: ViewModel() {
 
     var isLogin : Boolean = false
 
+    var userId : String = ""
+
     fun getLoginCache(context: Context) : Boolean{
         return DataStoreManager.getInstance(context).getLoginCache()
     }
@@ -53,6 +55,7 @@ class ProfileViewModel: ViewModel() {
             api.getUserInfo().let {
                 if (it.isSuccess()){
                     it.data.let { m ->
+
                         _userInfoLiveData.value = m
                     }
                 }

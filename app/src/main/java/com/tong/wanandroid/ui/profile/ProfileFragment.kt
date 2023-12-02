@@ -18,6 +18,8 @@ import com.tong.wanandroid.databinding.FragmentProfileBinding
 import com.tong.wanandroid.ui.coin.MyCoinInfoActivity
 import com.tong.wanandroid.ui.login.LoginActivity
 import com.tong.wanandroid.ui.message.MessageActivity
+import com.tong.wanandroid.ui.share.ShareActivity
+import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -59,6 +61,7 @@ class ProfileFragment : Fragment() {
         binding.user = UserBaseModel()
         viewModel.userInfoLiveData.observe(viewLifecycleOwner){
             binding.user = it
+            viewModel.userId = it.userInfo.id
             lifecycleScope.launch {
                 DataStoreManager.getInstance(requireContext()).cacheUserBaseInfo(it)
             }
@@ -106,8 +109,9 @@ class ProfileFragment : Fragment() {
 
         DataStoreManager.getInstance(requireContext()).isLogIn.onEach {
             if (it){
-                viewModel.isLogin = true
                 viewModel.getUserInfo()
+                viewModel.isLogin = true
+
             }else{
                 viewModel.isLogin = false
             }
@@ -141,17 +145,8 @@ class ProfileFragment : Fragment() {
             }
             getString(R.string.profile_item_title_share) -> {
                 checkLogin {
-
+                    ShareActivity.load(requireContext(),viewModel.userId)
                 }
-//                viewModel.accountState.value.checkLogin(requireContext()) {
-//                    startActivity(
-//                        intentTo(
-//                            Activities.ShareList(
-//                                bundle = bundleOf(Activities.ShareList.KEY_SHARE_LIST_USER_ID to viewModel.userId)
-//                            )
-//                        )
-//                    )
-//                }
             }
             getString(R.string.profile_item_title_favorite) -> {
                 checkLogin {

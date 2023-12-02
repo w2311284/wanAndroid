@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.share.ShareActivity">
+
+    <data>
+
+        <variable
+            name="ShareModel"
+            type="com.tong.wanandroid.common.services.model.ShareModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/md_theme_background">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:collapsedTitleTextColor="?colorPrimary"
+                app:contentScrim="@color/md_theme_background"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/toolbar">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/userAvatarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="?attr/actionBarSize"
+                    android:paddingBottom="?attr/actionBarSize"
+                    app:layout_collapseMode="parallax">
+
+                    <ImageView
+                        android:id="@+id/userAvatar"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/ic_profile_48dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="?attr/colorControlNormal"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="@{@string/profile_user_name(ShareModel.coinInfo.nickname)}"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/userShareCount"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/userAvatar"
+                        app:layout_constraintTop_toTopOf="@+id/userAvatar"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:text="Lowae" />
+
+                    <TextView
+                        android:id="@+id/userShareCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@{@string/share_count_description(ShareModel.shareArticles.total)}"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toTopOf="@id/userCoinCount"
+                        app:layout_constraintStart_toStartOf="@+id/userName"
+                        app:layout_constraintTop_toBottomOf="@+id/userName"
+                        tools:text="分享了1986篇文章" />
+
+                    <TextView
+                        android:id="@+id/userCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@{@string/profile_user_coin_and_rank(ShareModel.coinInfo.coinCount,ShareModel.coinInfo.level,ShareModel.coinInfo.rank)}"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/userAvatar"
+                        app:layout_constraintStart_toStartOf="@+id/userName"
+                        app:layout_constraintTop_toBottomOf="@+id/userShareCount"
+                        tools:text="积分: 49760 等级: 498 排名: 3" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/ic_arrow_back_24dp"
+                    app:navigationIconTint="?colorPrimary">
+
+                </com.google.android.material.appbar.MaterialToolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/shareList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_fragment_profile_list_corner"
+            android:overScrollMode="never"
+            android:paddingTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <include
+            android:id="@+id/loadingContainer"
+            layout="@layout/container_loading_layout" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
