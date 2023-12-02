@@ -54,6 +54,8 @@
     <string name="content_description_coin_ranking">积分排行榜</string>
 
     <string name="share_count_description">分享了%s篇文章</string>
+    <string name="classify_chapter_name">分类·%s</string>
+    <string name="author_name">作者·%s</string>
 
 
 </resources>

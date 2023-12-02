@@ -6,6 +6,7 @@ import com.tong.wanandroid.common.services.model.BannerModel
 import com.tong.wanandroid.common.services.model.ClassifyModel
 import com.tong.wanandroid.common.services.model.CoinHistoryModel
 import com.tong.wanandroid.common.services.model.CoinModel
+import com.tong.wanandroid.common.services.model.CollectModel
 import com.tong.wanandroid.common.services.model.HotKeyModel
 import com.tong.wanandroid.common.services.model.MessageModel
 import com.tong.wanandroid.common.services.model.NavigationModel
@@ -249,6 +250,26 @@ interface ApiService {
         @Path("userId") userId: String,
         @Path("page") page: Int
     ): NetworkResponse<ShareModel>
+
+
+    /**
+     * 收藏列表
+     */
+    @GET("lg/collect/list/{page}/json")
+    suspend fun getCollectList(@Path("page") page: Int): NetworkResponse<PageModel<CollectModel>>
+
+
+    /**
+     * 收藏站内文章
+     */
+    @POST("lg/collect/{id}/json")
+    suspend fun collectArticle(@Path("id") id: Int): NetworkResponse<Any>
+
+    /**
+     * 取消收藏站内文章
+     */
+    @POST("lg/uncollect_originId/{id}/json")
+    suspend fun unCollectArticle(@Path("id") id: Int): NetworkResponse<Any>
 
 
 }

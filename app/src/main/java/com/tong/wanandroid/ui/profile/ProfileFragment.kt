@@ -16,10 +16,11 @@ import com.tong.wanandroid.common.datastore.DataStoreManager
 import com.tong.wanandroid.common.services.model.UserBaseModel
 import com.tong.wanandroid.databinding.FragmentProfileBinding
 import com.tong.wanandroid.ui.coin.MyCoinInfoActivity
+import com.tong.wanandroid.ui.collect.CollectActivity
 import com.tong.wanandroid.ui.login.LoginActivity
 import com.tong.wanandroid.ui.message.MessageActivity
+import com.tong.wanandroid.ui.profile.adapter.ProfileAdapter
 import com.tong.wanandroid.ui.share.ShareActivity
-import com.tong.wanandroid.ui.web.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -150,11 +151,8 @@ class ProfileFragment : Fragment() {
             }
             getString(R.string.profile_item_title_favorite) -> {
                 checkLogin {
-
+                    requireContext().startActivity(Intent(context, CollectActivity::class.java))
                 }
-//                viewModel.accountState.value.checkLogin(requireContext()) {
-//                    startActivity(Intent(requireContext(), CollectActivity::class.java))
-//                }
             }
             getString(R.string.profile_item_title_tools) -> {
                 checkLogin {

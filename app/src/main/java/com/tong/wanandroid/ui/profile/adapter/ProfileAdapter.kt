@@ -1,4 +1,4 @@
-package com.tong.wanandroid.ui.profile
+package com.tong.wanandroid.ui.profile.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
