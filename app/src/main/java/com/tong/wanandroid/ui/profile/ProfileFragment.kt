@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ProfileItemModel
 import com.tong.wanandroid.common.datastore.DataStoreManager
@@ -34,9 +35,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var profileAdapter : ProfileAdapter
-
-//    private lateinit var dataStoreManager: DataStoreManager
+    private var profileAdapter : ProfileAdapter =  ProfileAdapter(emptyList(),this@ProfileFragment::onItemClick)
 
     companion object {
         fun newInstance() = ProfileFragment()
@@ -51,7 +50,6 @@ class ProfileFragment : Fragment() {
         viewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-//        dataStoreManager =  DataStoreManager.getInstance(requireContext())
         initView()
         initItems()
 
@@ -59,8 +57,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initView(){
-        profileAdapter = ProfileAdapter(emptyList(), onClick = { pos,item -> onItemClick(pos,item)})
-        binding.user = UserBaseModel()
+
         viewModel.userInfoLiveData.observe(viewLifecycleOwner){
             binding.user = it
             viewModel.userId = it.userInfo.id
@@ -113,9 +110,9 @@ class ProfileFragment : Fragment() {
             if (it){
                 viewModel.getUserInfo()
                 viewModel.isLogin = true
-
             }else{
                 viewModel.isLogin = false
+                binding.user = UserBaseModel()
             }
         }.launchIn(lifecycleScope)
 
@@ -133,7 +130,8 @@ class ProfileFragment : Fragment() {
             ),
             ProfileItemModel(R.drawable.ic_share_48dp, getString(R.string.profile_item_title_share)),
             ProfileItemModel(R.drawable.ic_collect, getString(R.string.profile_item_title_favorite)),
-            ProfileItemModel(R.drawable.ic_tool_48dp, getString(R.string.profile_item_title_tools))
+            ProfileItemModel(R.drawable.ic_tool_48dp, getString(R.string.profile_item_title_tools)),
+            ProfileItemModel(R.drawable.ic_settings_suggest_48dp, getString(R.string.profile_item_title_quit))
         )
         profileAdapter.notifyItemRangeChanged(0, profileAdapter.itemCount)
     }
@@ -160,10 +158,15 @@ class ProfileFragment : Fragment() {
                     requireContext().startActivity(Intent(context, ToolListActivity::class.java))
                 }
             }
+            getString(R.string.profile_item_title_quit) -> {
+                checkLogin {
+                    logout()
+                }
+            }
         }
     }
 
-    fun checkLogin(action : () -> Unit){
+    private fun checkLogin(action : () -> Unit){
         if (viewModel.isLogin) {
             action()
         } else {
@@ -171,6 +174,20 @@ class ProfileFragment : Fragment() {
             Toast.makeText(context, R.string.account_need_login, Toast.LENGTH_SHORT).show()
             context.startActivity(Intent(context, LoginActivity::class.java))
         }
+    }
+
+    private fun logout(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setCancelable(true)
+            .setTitle("确认退出登录？")
+            .setPositiveButton("确认") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                viewModel.logout(requireContext())
+            }
+            .setNegativeButton("取消") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .show()
     }
 
 

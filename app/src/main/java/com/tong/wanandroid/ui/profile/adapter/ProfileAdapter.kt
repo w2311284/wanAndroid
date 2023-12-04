@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ProfileItemModel
@@ -37,6 +38,9 @@ class ProfileAdapter(var items: List<ProfileItemModel>, private val onClick: (In
 class ProfileViewHolder(val binding: ItemProfileLayoutBinding):BaseViewHolder<ProfileItemModel>(binding){
     override fun bind(item: ProfileItemModel) {
         binding.item = item
+        Glide.with(binding.profileItemIcon)
+            .load(item.iconRes)
+            .into(binding.profileItemIcon)
         binding.executePendingBindings()
     }
 

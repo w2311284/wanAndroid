@@ -48,6 +48,12 @@ class DataStoreManager private constructor(private val context: Context) {
         }
     }
 
+    suspend fun clear(){
+        setLoggedIn(false)
+        clearUserBaseInfo()
+        RetrofitManager.cookieJar.clear()
+    }
+
     fun getLoginCache() : Boolean{
         return RetrofitManager.cookieJar.isLoginCookieValid()
     }

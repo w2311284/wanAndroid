@@ -33,7 +33,7 @@ enum class CollapsingToolBarState{
 }
 class ProfileViewModel: ViewModel() {
 
-    private val api = RetrofitManager.create(ApiService::class.java)
+    private val service = RetrofitManager.create(ApiService::class.java)
 
     private val _userInfoLiveData = MutableLiveData<UserBaseModel>()
     val userInfoLiveData: LiveData<UserBaseModel> = _userInfoLiveData
@@ -48,16 +48,23 @@ class ProfileViewModel: ViewModel() {
     fun getLoginCache(context: Context) : Boolean{
         return DataStoreManager.getInstance(context).getLoginCache()
     }
-
-
     fun getUserInfo(){
         viewModelScope.launch {
-            api.getUserInfo().let {
+            service.getUserInfo().let {
                 if (it.isSuccess()){
                     it.data.let { m ->
-
                         _userInfoLiveData.value = m
                     }
+                }
+            }
+        }
+    }
+
+    fun logout(context: Context){
+        viewModelScope.launch {
+            service.logout().let {
+                if (it.isSuccess()){
+                    DataStoreManager.getInstance(context).clear()
                 }
             }
         }

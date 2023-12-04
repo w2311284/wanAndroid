@@ -39,4 +39,8 @@ class CookieJarImpl : CookieJar {
         }
         return isUserNameValid && isUserTokenValid
     }
+
+    fun clear(){
+        cookieStore.clear()
+    }
 }
