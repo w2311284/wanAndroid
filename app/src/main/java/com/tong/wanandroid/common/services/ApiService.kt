@@ -14,6 +14,7 @@ import com.tong.wanandroid.common.services.model.PageModel
 import com.tong.wanandroid.common.services.model.ProjectTitleModel
 import com.tong.wanandroid.common.services.model.SeriesModel
 import com.tong.wanandroid.common.services.model.ShareModel
+import com.tong.wanandroid.common.services.model.ToolModel
 import com.tong.wanandroid.common.services.model.UserBaseModel
 import com.tong.wanandroid.common.services.model.UserModel
 import retrofit2.http.Field
@@ -270,6 +271,13 @@ interface ApiService {
      */
     @POST("lg/uncollect_originId/{id}/json")
     suspend fun unCollectArticle(@Path("id") id: Int): NetworkResponse<Any>
+
+
+    /**
+     * 工具列表
+     */
+    @GET("tools/list/json")
+    suspend fun getToolList(): NetworkResponse<List<ToolModel>>
 
 
 }

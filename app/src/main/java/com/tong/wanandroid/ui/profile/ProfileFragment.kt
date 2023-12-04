@@ -21,6 +21,7 @@ import com.tong.wanandroid.ui.login.LoginActivity
 import com.tong.wanandroid.ui.message.MessageActivity
 import com.tong.wanandroid.ui.profile.adapter.ProfileAdapter
 import com.tong.wanandroid.ui.share.ShareActivity
+import com.tong.wanandroid.ui.tools.ToolListActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -156,9 +157,8 @@ class ProfileFragment : Fragment() {
             }
             getString(R.string.profile_item_title_tools) -> {
                 checkLogin {
-
+                    requireContext().startActivity(Intent(context, ToolListActivity::class.java))
                 }
-//                startActivity(Intent(requireContext(), ToolListActivity::class.java))
             }
         }
     }

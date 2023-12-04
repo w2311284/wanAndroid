@@ -16,6 +16,9 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".ui.tools.ToolListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.collect.CollectActivity"
             android:exported="false" />
         <activity
