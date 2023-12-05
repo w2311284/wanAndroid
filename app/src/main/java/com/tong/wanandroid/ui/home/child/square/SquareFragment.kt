@@ -9,13 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.CollectEventModel
 import com.tong.wanandroid.databinding.FragmentSquareBinding
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import com.tong.wanandroid.ui.web.WebActivity
@@ -33,6 +36,8 @@ class SquareFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: SquareViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
 
     private val squareAdapter by lazy { HomeAdapter(this@SquareFragment::onItemClick) }
 
@@ -74,20 +79,25 @@ class SquareFragment : Fragment() {
             squareAdapter.refresh()
         }
 
+        collectViewModel.collectArticleEvent.observe(viewLifecycleOwner) { event ->
+            squareAdapter.snapshot().run {
+                val index = indexOfFirst { it is ArticleModel && it.id == event.id }
+                if (index >= 0) {
+                    (this[index] as? ArticleModel)?.collect = event.isCollected
+                    index
+                } else null
+            }?.apply(squareAdapter::notifyItemChanged)
+        }
+
     }
 
-    private fun onItemClick(articleAction: ArticleAction) {
-        when (articleAction) {
-            is ArticleAction.ItemClick -> pushToDetailActivity(requireContext(),articleAction.article)
-            is ArticleAction.CollectClick -> null
+    private fun onItemClick(action: ArticleAction) {
+        when (action) {
+            is ArticleAction.ItemClick -> WebActivity.loadUrl(requireContext(),action.article.id,action.article.link,action.article.collect)
+            is ArticleAction.CollectClick -> collectViewModel.articleCollectAction(CollectEventModel(action.article.id,action.article.link,action.article.collect.not()))
             is ArticleAction.AuthorClick -> null
             else -> null
         }
-    }
-
-    private fun pushToDetailActivity(context: Context, article: ArticleModel) {
-        // 跳转到详情页面
-        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

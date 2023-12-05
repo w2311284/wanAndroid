@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.CollectEventModel
 import com.tong.wanandroid.databinding.FragmentGroupChildBinding
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.footer.FooterStateAdapter
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
@@ -40,6 +43,8 @@ class GroupChildFragment : Fragment() {
     private val childId by lazy { arguments?.getInt(key_group_child_id, -1) ?: -1 }
 
     private lateinit var viewModel: GroupChildViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
 
     private val groupAdapter by lazy { HomeAdapter(this@GroupChildFragment::onItemClick) }
 
@@ -84,20 +89,25 @@ class GroupChildFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
             groupAdapter.refresh()
         }
-    }
 
-    private fun onItemClick(articleAction: ArticleAction) {
-        when (articleAction) {
-            is ArticleAction.ItemClick -> pushToDetailActivity(articleAction.article)
-            is ArticleAction.CollectClick -> null
-            is ArticleAction.AuthorClick -> null
-            else -> null
+        collectViewModel.collectArticleEvent.observe(viewLifecycleOwner) { event ->
+            groupAdapter.snapshot().run {
+                val index = indexOfFirst { it is ArticleModel && it.id == event.id }
+                if (index >= 0) {
+                    (this[index] as? ArticleModel)?.collect = event.isCollected
+                    index
+                } else null
+            }?.apply(groupAdapter::notifyItemChanged)
         }
     }
 
-    private fun pushToDetailActivity(article: ArticleModel) {
-        // 跳转到详情页面
-        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
+    private fun onItemClick(action: ArticleAction) {
+        when (action) {
+            is ArticleAction.ItemClick -> WebActivity.loadUrl(requireContext(),action.article.id,action.article.link,action.article.collect)
+            is ArticleAction.CollectClick -> collectViewModel.articleCollectAction(CollectEventModel(action.article.id,action.article.link,action.article.collect.not()))
+            is ArticleAction.AuthorClick -> null
+            else -> null
+        }
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

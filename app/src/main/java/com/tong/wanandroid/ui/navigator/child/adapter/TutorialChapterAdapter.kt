@@ -2,12 +2,14 @@ package com.tong.wanandroid.ui.navigator.child.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.ItemHomeArticleLayoutBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.viewHolder.ArticleViewHolder
 
 
@@ -30,6 +32,7 @@ class TutorialChapterAdapter(private val items : List<ArticleModel>, private val
                 root.setOnClickListener {
                     onClick(holder.bindingAdapterPosition, item)
                 }
+                ivCollect.isVisible = false
             }
         }
     }

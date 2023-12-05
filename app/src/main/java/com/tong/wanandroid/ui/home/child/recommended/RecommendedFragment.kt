@@ -1,6 +1,6 @@
 package com.tong.wanandroid.ui.home.child.recommended
 
-import android.content.Intent
+
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
@@ -15,7 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.common.services.model.BannerModel
+import com.tong.wanandroid.common.services.model.CollectEventModel
 import com.tong.wanandroid.databinding.FragmentRecommendedBinding
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.footer.FooterStateAdapter
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
@@ -26,9 +29,6 @@ import kotlinx.coroutines.launch
 class RecommendedFragment : Fragment() {
 
     private var _binding: FragmentRecommendedBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     companion object {
@@ -36,6 +36,8 @@ class RecommendedFragment : Fragment() {
     }
 
     private lateinit var viewModel: RecommendedViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
     private val homeAdapter by lazy { HomeAdapter(this@RecommendedFragment::onItemClick) }
 
     override fun onCreateView(
@@ -52,6 +54,10 @@ class RecommendedFragment : Fragment() {
     fun initView(){
         val recycleView = binding.recommendedList
         val swipeRefreshLayout = binding.recommendedRefreshLayout
+        binding.recommendedRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            homeAdapter.refresh()
+        }
 
         recycleView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -74,30 +80,24 @@ class RecommendedFragment : Fragment() {
             }
         })
 
-
-        swipeRefreshLayout.setOnRefreshListener {
-            swipeRefreshLayout.isRefreshing = false
-            homeAdapter.refresh()
+        collectViewModel.collectArticleEvent.observe(viewLifecycleOwner) { event ->
+            homeAdapter.snapshot().run {
+                val index = indexOfFirst { it is ArticleModel && it.id == event.id }
+                if (index >= 0) {
+                    (this[index] as? ArticleModel)?.collect = event.isCollected
+                    index
+                } else null
+            }?.apply(homeAdapter::notifyItemChanged)
         }
     }
 
-    private fun onItemClick(articleAction: ArticleAction) {
-        when (articleAction) {
-            is ArticleAction.ItemClick -> pushToDetailActivity(articleAction.article)
-            is ArticleAction.CollectClick -> null
+    private fun onItemClick(action: ArticleAction) {
+        when (action) {
+            is ArticleAction.ItemClick -> WebActivity.loadUrl(requireContext(),action.article.id,action.article.link,action.article.collect)
+            is ArticleAction.CollectClick -> collectViewModel.articleCollectAction(CollectEventModel(action.article.id,action.article.link,action.article.collect.not()))
             is ArticleAction.AuthorClick -> null
-            is ArticleAction.BannerClick -> pushToBanner(articleAction.banner)
+            is ArticleAction.BannerClick -> WebActivity.loadUrl(requireContext(),action.banner.id,action.banner.url,false)
         }
-    }
-
-    private fun pushToDetailActivity(article: ArticleModel) {
-        // 跳转到详情页面
-        WebActivity.loadUrl(requireContext(),article.id,article.link,article.collect)
-    }
-
-    private fun pushToBanner(banner: BannerModel) {
-        // 跳转到banner
-        WebActivity.loadUrl(requireContext(),banner.id,banner.url,false)
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

@@ -2,12 +2,15 @@ package com.tong.wanandroid.ui.navigator.child.tutorial.child
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.ArticleModel
 import com.tong.wanandroid.databinding.ActivitySeriesDetailBinding
 import com.tong.wanandroid.databinding.ActivityTutorialChapterBinding
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import com.tong.wanandroid.ui.navigator.child.adapter.TutorialChapterAdapter
@@ -27,6 +30,8 @@ class TutorialChapterActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: TutorialChapterViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

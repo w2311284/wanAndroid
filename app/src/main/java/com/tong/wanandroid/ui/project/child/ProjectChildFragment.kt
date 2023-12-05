@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
@@ -14,7 +15,9 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.CollectEventModel
 import com.tong.wanandroid.databinding.FragmentProjectChildBinding
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.footer.FooterStateAdapter
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.web.WebActivity
@@ -37,6 +40,8 @@ class ProjectChildFragment : Fragment() {
     private val categoryId by lazy { arguments?.getInt("key_project_child_category_id", -1) ?: -1 }
 
     private lateinit var viewModel: ProjectChildViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,20 +87,25 @@ class ProjectChildFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
             projectAdapter.refresh()
         }
-    }
 
-    private fun onItemClick(articleAction: ArticleAction) {
-        when (articleAction) {
-            is ArticleAction.ItemClick -> pushToDetailActivity(articleAction.article)
-            is ArticleAction.CollectClick -> null
-            is ArticleAction.AuthorClick -> null
-            else -> null
+        collectViewModel.collectArticleEvent.observe(viewLifecycleOwner) { event ->
+            projectAdapter.snapshot().run {
+                val index = indexOfFirst { it is ArticleModel && it.id == event.id }
+                if (index >= 0) {
+                    (this[index] as? ArticleModel)?.collect = event.isCollected
+                    index
+                } else null
+            }?.apply(projectAdapter::notifyItemChanged)
         }
     }
 
-    private fun pushToDetailActivity(article: ArticleModel) {
-        // 跳转到详情页面
-        context?.let { WebActivity.loadUrl(it,article.id,article.link,article.collect) }
+    private fun onItemClick(action: ArticleAction) {
+        when (action) {
+            is ArticleAction.ItemClick -> WebActivity.loadUrl(requireContext(),action.article.id,action.article.link,action.article.collect)
+            is ArticleAction.CollectClick -> collectViewModel.articleCollectAction(CollectEventModel(action.article.id,action.article.link,action.article.collect.not()))
+            is ArticleAction.AuthorClick -> null
+            else -> null
+        }
     }
 
     private fun updateLoadStates(loadStates: CombinedLoadStates) {

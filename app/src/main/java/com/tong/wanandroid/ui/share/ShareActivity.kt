@@ -4,15 +4,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import com.tong.wanandroid.R
+import com.tong.wanandroid.common.services.model.ArticleModel
+import com.tong.wanandroid.common.services.model.CollectEventModel
 import com.tong.wanandroid.databinding.ActivityMyCoinInfoBinding
 import com.tong.wanandroid.databinding.ActivityShareBinding
 import com.tong.wanandroid.ui.coin.MyCoinInfoViewModel
+import com.tong.wanandroid.ui.collect.CollectViewModel
 import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 import com.tong.wanandroid.ui.home.child.adapter.HomeAdapter
 import com.tong.wanandroid.ui.profile.CollapsingToolBarState
@@ -28,6 +33,8 @@ class ShareActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: ShareViewModel
+
+    val collectViewModel: CollectViewModel by viewModels()
 
     private val shareAdapter by lazy { HomeAdapter(this@ShareActivity::onItemClick) }
 
@@ -99,12 +106,22 @@ class ShareActivity : AppCompatActivity() {
                 binding.shareModel = it
             }
         }
+
+        collectViewModel.collectArticleEvent.observe(this) { event ->
+            shareAdapter.snapshot().run {
+                val index = indexOfFirst { it is ArticleModel && it.id == event.id }
+                if (index >= 0) {
+                    (this[index] as? ArticleModel)?.collect = event.isCollected
+                    index
+                } else null
+            }?.apply(shareAdapter::notifyItemChanged)
+        }
     }
 
-    private fun onItemClick(articleAction: ArticleAction) {
-        when (articleAction) {
-            is ArticleAction.ItemClick -> WebActivity.loadUrl(this,articleAction.article.id,articleAction.article.link,articleAction.article.collect)
-            is ArticleAction.CollectClick -> null
+    private fun onItemClick(action: ArticleAction) {
+        when (action) {
+            is ArticleAction.ItemClick -> WebActivity.loadUrl(this,action.article.id,action.article.link,action.article.collect)
+            is ArticleAction.CollectClick -> collectViewModel.articleCollectAction(CollectEventModel(action.article.id,action.article.link,action.article.collect.not()))
             is ArticleAction.AuthorClick -> null
             is ArticleAction.BannerClick -> null
         }

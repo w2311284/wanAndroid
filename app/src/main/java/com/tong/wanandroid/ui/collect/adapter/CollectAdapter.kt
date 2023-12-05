@@ -10,6 +10,7 @@ import com.tong.wanandroid.BaseViewHolder
 import com.tong.wanandroid.R
 import com.tong.wanandroid.common.services.model.CollectModel
 import com.tong.wanandroid.databinding.ItemCollectArticleLayoutBinding
+import com.tong.wanandroid.ui.home.child.adapter.ArticleAction
 
 enum class ItemClickType {
 
@@ -46,6 +47,14 @@ class CollectAdapter(private val onClick: (Int, CollectModel, type: ItemClickTyp
         val item = getItem(position)
         if (holder is CollectViewHolder){
             val model =  item as CollectModel
+            holder.binding.apply {
+                root.setOnClickListener {
+                    onClick(holder.bindingAdapterPosition,model, ItemClickType.CONTENT)
+                }
+                ivCollect.setOnClickListener {
+                    onClick(holder.bindingAdapterPosition,model, ItemClickType.COLLECT)
+                }
+            }
             holder.bind(model)
         }
     }
